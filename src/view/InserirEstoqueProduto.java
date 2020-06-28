@@ -5,6 +5,10 @@
  */
 package view;
 
+import controller.Produto;
+import javax.swing.JOptionPane;
+import model.ProdutoDAO;
+
 /**
  *
  * @author gustavo
@@ -29,51 +33,60 @@ public class InserirEstoqueProduto extends javax.swing.JFrame {
 
         jLabel2 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        btn_inserirEstoque = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txt_codigoProduto = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
-        jButton2 = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        txt_addEstoque = new javax.swing.JFormattedTextField();
+        btn_mostraInfo = new javax.swing.JButton();
+        lbl_nome = new javax.swing.JLabel();
+        lbl_preco = new javax.swing.JLabel();
+        lbl_qtdEstoque = new javax.swing.JLabel();
 
         jLabel2.setText("Quantidade");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Inserir Estoque");
 
-        jButton1.setText("Inserir Estoque");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jPanel1.setBackground(new java.awt.Color(234, 211, 161));
+        jPanel1.setFont(new java.awt.Font("Fira Code", 0, 12)); // NOI18N
+
+        btn_inserirEstoque.setText("Inserir Estoque");
+        btn_inserirEstoque.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btn_inserirEstoqueActionPerformed(evt);
             }
         });
 
         jLabel1.setText("Código do Produto");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txt_codigoProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txt_codigoProdutoActionPerformed(evt);
             }
         });
 
         jLabel3.setText("Quantidade");
 
-        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
-        jFormattedTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txt_addEstoque.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        txt_addEstoque.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jFormattedTextField1ActionPerformed(evt);
+                txt_addEstoqueActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Informações do Produto");
+        btn_mostraInfo.setText("Mostrar Informações do Produto");
+        btn_mostraInfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_mostraInfoActionPerformed(evt);
+            }
+        });
 
-        jLabel4.setText("Nome: ");
+        lbl_nome.setText("Nome: ");
 
-        jLabel5.setText("Preço:");
+        lbl_preco.setText("Preço:");
 
-        jLabel6.setText("Quantidade em Estoque:");
+        lbl_qtdEstoque.setText("Quantidade em Estoque Atual:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -85,44 +98,49 @@ public class InserirEstoqueProduto extends javax.swing.JFrame {
                         .addGap(47, 47, 47)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel1)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
+                            .addComponent(txt_codigoProduto, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
                             .addComponent(jLabel3)
-                            .addComponent(jFormattedTextField1)))
+                            .addComponent(txt_addEstoque)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(132, 132, 132)
-                        .addComponent(jButton1)))
-                .addGap(77, 77, 77)
+                        .addComponent(btn_inserirEstoque)))
+                .addGap(20, 20, 20)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton2)
-                        .addGap(0, 41, Short.MAX_VALUE))
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btn_mostraInfo)
+                        .addGap(0, 47, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_preco, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lbl_nome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lbl_qtdEstoque, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addComponent(jLabel1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txt_codigoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btn_mostraInfo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lbl_nome)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
+                    .addComponent(lbl_preco)
+                    .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel6)
-                .addGap(26, 26, 26)
-                .addComponent(jButton1)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbl_qtdEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_addEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
+                .addComponent(btn_inserirEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -133,23 +151,51 @@ public class InserirEstoqueProduto extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jFormattedTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField1ActionPerformed
+    private void txt_addEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_addEstoqueActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jFormattedTextField1ActionPerformed
+    }//GEN-LAST:event_txt_addEstoqueActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btn_inserirEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_inserirEstoqueActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        if (!txt_codigoProduto.getText().isEmpty() && !txt_addEstoque.getText().isEmpty()) {
+            ProdutoDAO daoProduto = new ProdutoDAO();
+            int codigo = Integer.parseInt(txt_codigoProduto.getText());
+            int addEstoque = Integer.parseInt(txt_addEstoque.getText());
+            if (daoProduto.inserirEstoqueProduto(addEstoque, codigo)) {
+                JOptionPane.showMessageDialog(null, "Estoque Inserido");
+                this.btn_mostraInfoActionPerformed(evt);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Todos os campos devem estar preenchidos.");
+        }
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_btn_inserirEstoqueActionPerformed
+
+    private void txt_codigoProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_codigoProdutoActionPerformed
+
+    }//GEN-LAST:event_txt_codigoProdutoActionPerformed
+
+    private void btn_mostraInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_mostraInfoActionPerformed
+        // TODO add your handling code here:
+
+        if (!txt_codigoProduto.getText().isEmpty()) {
+            ProdutoDAO daoProduto = new ProdutoDAO();
+            int codigo = Integer.parseInt(txt_codigoProduto.getText());
+            Produto produto = daoProduto.getInfoProduto(codigo);
+
+            lbl_nome.setText("Nome: " + produto.getNomeProduto());
+            lbl_preco.setText("Preco: R$ " + produto.getPreco());
+            lbl_qtdEstoque.setText("Quantidade em Estoque Atual: " + produto.getQuantidadeEstoque());
+        } else {
+            JOptionPane.showMessageDialog(null, "O campo código não pode estar vazio.");
+        }
+    }//GEN-LAST:event_btn_mostraInfoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -187,16 +233,16 @@ public class InserirEstoqueProduto extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
+    private javax.swing.JButton btn_inserirEstoque;
+    private javax.swing.JButton btn_mostraInfo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel lbl_nome;
+    private javax.swing.JLabel lbl_preco;
+    private javax.swing.JLabel lbl_qtdEstoque;
+    private javax.swing.JFormattedTextField txt_addEstoque;
+    private javax.swing.JTextField txt_codigoProduto;
     // End of variables declaration//GEN-END:variables
 }

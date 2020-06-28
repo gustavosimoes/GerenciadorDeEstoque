@@ -43,7 +43,10 @@ public class CadastroNovoProduto extends javax.swing.JFrame {
         txt_descricao = new javax.swing.JTextArea();
         btn_finalizarCadastro = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Cadastro Produto");
+
+        jPanel1.setBackground(new java.awt.Color(234, 211, 161));
 
         jLabel3.setText("Descrição");
 

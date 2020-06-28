@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 //Início da classe de conexão//
@@ -82,30 +83,28 @@ public class ProdutoDAO {
         return sucesso;
     }
 
-    
     /**
      * Esta função insere a quantidade de produtos no estoque.
      */
-    public boolean inserirEstoqueProduto(int addEstoque, int codigoProduto){
-        
-        connectToDb();
-        
+    public boolean inserirEstoqueProduto(int addEstoque, int codigoProduto) {
+
         int estoqueAtual = this.getEstoqueProduto(codigoProduto);
         int novoEstoque = estoqueAtual + addEstoque;
-        
+
+        connectToDb();
+
         String sqlUpdateEstoque = "UPDATE Produto SET qtdEstoque = ? WHERE codigo = ?";
-        try{
+        try {
             pst = con.prepareStatement(sqlUpdateEstoque);
             pst.setInt(1, novoEstoque);
             pst.setInt(2, codigoProduto);
-            
+
             pst.execute();
-            JOptionPane.showMessageDialog(null, "Inserção feita com sucesso!");
             sucesso = true;
-        } catch(SQLException ex){
+        } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro = " + ex.getMessage());
             sucesso = false;
-        } finally{
+        } finally {
             try {   //Encerra a conexão
                 con.close();
                 pst.close();
@@ -116,7 +115,37 @@ public class ProdutoDAO {
 
         return sucesso;
     }
-    
+
+    public boolean removerEstoqueProduto(int delEstoque, int codigoProduto) {
+
+        int estoqueAtual = this.getEstoqueProduto(codigoProduto);
+        int novoEstoque = estoqueAtual - delEstoque;
+
+        connectToDb();
+
+        String sqlUpdateEstoque = "UPDATE Produto SET qtdEstoque = ? WHERE codigo = ?";
+        try {
+            pst = con.prepareStatement(sqlUpdateEstoque);
+            pst.setInt(1, novoEstoque);
+            pst.setInt(2, codigoProduto);
+
+            pst.execute();
+            sucesso = true;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro = " + ex.getMessage());
+            sucesso = false;
+        } finally {
+            try {   //Encerra a conexão
+                con.close();
+                pst.close();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Erro = " + ex.getMessage());
+            }
+        }
+
+        return sucesso;
+    }
+
     /**
      * Esta função retorna a quantidade de estoque do produto específico.
      */
@@ -152,92 +181,155 @@ public class ProdutoDAO {
 
     }
 
-//    /**
-//     * Esta função retorna uma lista com os competidores da equipe selecionada.
-//     */
-//    public ArrayList<Competidor> listaCompetidores(String nomeEquipe) {
-//        ArrayList<Competidor> listaCompetidores = new ArrayList<>();
-//        connectToDb();
-//
-//        EquipeDAO daoEquipe = new EquipeDAO();
-//
-//        int idEquipe = daoEquipe.getIdEquipe(nomeEquipe);
-//        int idCapitao = 0;
-//
-//        String sqlCapitao = "SELECT * FROM equipe WHERE idequipe = ?";
-//        String sqlCompetidores = "SELECT * FROM competidor WHERE equipe_idequipe = ? ";
-//        try {
-//            pst = con.prepareStatement(sqlCapitao);
-//            pst.setInt(1, idEquipe);
-//            rs = pst.executeQuery();
-//
-//            while (rs.next()) {
-//                idCapitao = rs.getInt("competidor_idcompetidor");
-//            }
-//
-//            pst = con.prepareStatement(sqlCompetidores);
-//            pst.setInt(1, idEquipe);
-//            rs = pst.executeQuery();
-//
-//            while (rs.next()) {
-//                Competidor competidorTemp = new Competidor(rs.getString("nome"), rs.getInt("idade"), rs.getString("sexo"));
-//
-//                if (rs.getInt("idcompetidor") == idCapitao) { //caso o competidor atual seja o capitão da equipe, atualizamos a variavel dele para true.
-//                    competidorTemp.setCapitao(true);
-//                }
-//                listaCompetidores.add(competidorTemp);
-//            }
-//        } catch (SQLException ex) {
-//            JOptionPane.showMessageDialog(null, "Erro = " + ex.getMessage());
-//        } finally {
-//            try {
-//                con.close();
-//                pst.close();
-//            } catch (SQLException ex) {
-//                JOptionPane.showMessageDialog(null, "Erro = " + ex.getMessage());
-//            }
-//        }
-//
-//        return listaCompetidores;
-//    }
-//
-//    /**
-//     * Esta função exclui o competidor selecionado.
-//     */
-//    public boolean deletarCompetidor(String nomeCompetidor) {
-//
-//        connectToDb(); //Conecta ao banco de dados
-//        //Comando em SQL:
-//
-//        int idCompetidor = 0;
-//
-//        String sqlIdCompetidor = "SELECT * FROM competidor WHERE nome = ?";
-//        String sqlApagaCompetidor = "DELETE FROM competidor WHERE idcompetidor = ?";
-//        try {
-//            pst = con.prepareStatement(sqlIdCompetidor);
-//            pst.setString(1, nomeCompetidor);
-//            rs = pst.executeQuery();
-//
-//            while (rs.next()) {
-//                idCompetidor = rs.getInt("idcompetidor");
-//            }
-//
-//            pst = con.prepareStatement(sqlApagaCompetidor);
-//            pst.setInt(1, idCompetidor);
-//
-//            pst.execute();
-//            sucesso = true;
-//        } catch (SQLException ex) {
-//            System.out.println("Erro = " + ex.getMessage());
-//        } finally {
-//            try {
-//                con.close();
-//                pst.close();
-//            } catch (SQLException ex) {
-//                JOptionPane.showMessageDialog(null, "Erro = " + ex.getMessage());
-//            }
-//        }
-//
-//        return sucesso;
-//    }
+    public String getNomeProduto(int codigoDeBarras) {
+
+        connectToDb();
+
+        String nome = null;
+
+        String sqlGetNome = "SELECT nomeProduto FROM Produto WHERE codigo = ?";
+        try {
+            pst = con.prepareStatement(sqlGetNome);
+            pst.setInt(1, codigoDeBarras);
+
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                nome = rs.getString("nomeProduto");
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro = " + ex.getMessage());
+            sucesso = false;
+        } finally {
+            try {   //Encerra a conexão
+                con.close();
+                pst.close();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Erro = " + ex.getMessage());
+            }
+        }
+        return nome;
+
+    }
+
+    public String getDescricaoProduto(int codigoDeBarras) {
+
+        connectToDb();
+
+        String descricao = null;
+
+        String sqlGetDescricao = "SELECT descricao FROM Produto WHERE codigo = ?";
+        try {
+            pst = con.prepareStatement(sqlGetDescricao);
+            pst.setInt(1, codigoDeBarras);
+
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                descricao = rs.getString("descricao");
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro = " + ex.getMessage());
+            sucesso = false;
+        } finally {
+            try {   //Encerra a conexão
+                con.close();
+                pst.close();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Erro = " + ex.getMessage());
+            }
+        }
+        return descricao;
+
+    }
+
+    /**
+     * Esta função retorna o preco do produto específico.
+     */
+    public double getPrecoProduto(int codigoDeBarras) {
+
+        connectToDb();
+
+        double preco = 0;
+
+        String sqlGetEstoque = "SELECT preco FROM Produto WHERE codigo = ?";
+        try {
+            pst = con.prepareStatement(sqlGetEstoque);
+            pst.setInt(1, codigoDeBarras);
+
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                preco = rs.getDouble("preco");
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro = " + ex.getMessage());
+            sucesso = false;
+        } finally {
+            try {   //Encerra a conexão
+                con.close();
+                pst.close();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Erro = " + ex.getMessage());
+            }
+        }
+        return preco;
+
+    }
+
+    public Produto getInfoProduto(int codigoProduto) {
+
+        String nome = this.getNomeProduto(codigoProduto);
+        String descricao = this.getDescricaoProduto(codigoProduto);
+        double preco = this.getPrecoProduto(codigoProduto);
+        Produto produto = new Produto(codigoProduto, nome, descricao, preco);
+        produto.setQuantidadeEstoque(this.getEstoqueProduto(codigoProduto));
+
+        return produto;
+    }
+
+    public ArrayList<Produto> getProdutos() {
+
+        ArrayList<Produto> listaProdutos = new ArrayList<>();
+        Produto produtoTemp;
+        int codigo, qtdEstoque;
+        double preco;
+        String nomeProduto, descricao;
+
+        connectToDb();
+
+        String sqlGetProdutos = "SELECT * FROM Produto";
+        try {
+            
+            st = con.createStatement();
+            rs = st.executeQuery(sqlGetProdutos);
+
+            while (rs.next()) {
+                codigo = rs.getInt("codigo");
+                nomeProduto = rs.getString("nomeProduto");
+                descricao = rs.getString("descricao");
+                preco = rs.getDouble("preco");
+                qtdEstoque = rs.getInt("qtdEstoque");
+
+                produtoTemp = new Produto(codigo, nomeProduto, descricao, preco, qtdEstoque);
+                listaProdutos.add(produtoTemp);
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro = " + ex.getMessage());
+            sucesso = false;
+        } finally {
+            try {   //Encerra a conexão
+                con.close();
+                st.close();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Erro = " + ex.getMessage());
+            }
+        }
+
+        return listaProdutos;
+    }
 }

@@ -10,18 +10,18 @@ package controller;
  */
 public class Produto {
 
-    private static int quantidadeEstoque = 0;
+    private int quantidadeEstoque;
     private int codigo;
     private String nomeProduto;
     private String descricao;
     private double preco;
 
-    public static int getQuantidadeEstoque() {
+    public int getQuantidadeEstoque() {
         return quantidadeEstoque;
     }
 
-    public static void setQuantidadeEstoque(int quantidadeEstoque) {
-        Produto.quantidadeEstoque = quantidadeEstoque;
+    public void setQuantidadeEstoque(int quantidadeEstoque) {
+        this.quantidadeEstoque = quantidadeEstoque;
     }
 
     public int getCodigo() {
@@ -61,14 +61,14 @@ public class Produto {
         this.nomeProduto = nomeProduto;
         this.descricao = descricao;
         this.preco = preco;
+        this.quantidadeEstoque = 0;
     }
-
-    public void atualizaEstoqueInsercao() {
-        Produto.setQuantidadeEstoque(Produto.getQuantidadeEstoque() + 1);
+    
+    public Produto(int codigo, String nomeProduto, String descricao, double preco, int quantidadeEstoque) {
+        this.codigo = codigo;
+        this.nomeProduto = nomeProduto;
+        this.descricao = descricao;
+        this.preco = preco;
+        this.quantidadeEstoque = quantidadeEstoque;
     }
-
-    public void atualizaEstoqueVenda() {
-        Produto.setQuantidadeEstoque(Produto.getQuantidadeEstoque() - 1);
-    }
-
 }

@@ -5,6 +5,8 @@
  */
 package view;
 
+import controller.GeradorPdf;
+
 /**
  *
  * @author gustavo
@@ -16,6 +18,7 @@ public class TelaInicial extends javax.swing.JFrame {
      */
     public TelaInicial() {
         initComponents();
+        setExtendedState(MAXIMIZED_BOTH);
     }
 
     /**
@@ -27,97 +30,142 @@ public class TelaInicial extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btn_novoProduto = new javax.swing.JButton();
-        btn_estoqueGeral = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        btn_estoqueProduto = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        lbl_icon = new javax.swing.JLabel();
+        btn_gerenciarEstoque = new javax.swing.JButton();
+        btn_cadastrarVenda = new javax.swing.JButton();
+        btn_relatorioDiario = new javax.swing.JButton();
+        btn_relatorioMensal = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("SS Bordados & CIA");
+        setResizable(false);
 
-        btn_novoProduto.setText("Cadastrar Novo Produto");
-        btn_novoProduto.addActionListener(new java.awt.event.ActionListener() {
+        jPanel1.setBackground(new java.awt.Color(234, 211, 161));
+        jPanel1.setPreferredSize(new java.awt.Dimension(1500, 800));
+
+        lbl_icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/iconSSBordados.jpg"))); // NOI18N
+
+        btn_gerenciarEstoque.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        btn_gerenciarEstoque.setText("Gerenciar Estoque");
+        btn_gerenciarEstoque.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_novoProdutoActionPerformed(evt);
+                btn_gerenciarEstoqueActionPerformed(evt);
             }
         });
 
-        btn_estoqueGeral.setText("Ver Estoque Geral");
-        btn_estoqueGeral.addActionListener(new java.awt.event.ActionListener() {
+        btn_cadastrarVenda.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        btn_cadastrarVenda.setText("Cadastrar Venda");
+        btn_cadastrarVenda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_estoqueGeralActionPerformed(evt);
+                btn_cadastrarVendaActionPerformed(evt);
             }
         });
 
-        jButton3.setText("jButton2");
-
-        jButton4.setText("jButton2");
-
-        jButton5.setText("jButton2");
-
-        btn_estoqueProduto.setText("Editar Estoque do Produto");
-        btn_estoqueProduto.addActionListener(new java.awt.event.ActionListener() {
+        btn_relatorioDiario.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        btn_relatorioDiario.setText("Relatório Diário");
+        btn_relatorioDiario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_estoqueProdutoActionPerformed(evt);
+                btn_relatorioDiarioActionPerformed(evt);
             }
         });
+
+        btn_relatorioMensal.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        btn_relatorioMensal.setText("Relatório Mensal");
+        btn_relatorioMensal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_relatorioMensalActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel1.setText("Versão 1.0");
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icone7575.png"))); // NOI18N
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(414, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btn_gerenciarEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(100, 100, 100)
+                        .addComponent(btn_cadastrarVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btn_relatorioDiario, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_relatorioMensal, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(290, 290, 290)
+                        .addComponent(lbl_icon)))
+                .addContainerGap(386, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel1))
+                .addGap(20, 20, 20))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbl_icon)
+                .addGap(30, 30, 30)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_gerenciarEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_cadastrarVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(100, 100, 100)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_relatorioDiario, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_relatorioMensal, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 145, Short.MAX_VALUE)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel1)
+                .addGap(10, 10, 10))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(68, 68, 68)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btn_estoqueGeral)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btn_novoProduto)
-                        .addGap(77, 77, 77)
-                        .addComponent(btn_estoqueProduto))
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
-                .addContainerGap(165, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton5)
-                .addGap(215, 215, 215))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_novoProduto)
-                    .addComponent(btn_estoqueProduto))
-                .addGap(31, 31, 31)
-                .addComponent(btn_estoqueGeral)
-                .addGap(18, 18, 18)
-                .addComponent(jButton3)
-                .addGap(28, 28, 28)
-                .addComponent(jButton4)
-                .addGap(87, 87, 87)
-                .addComponent(jButton5)
-                .addContainerGap(112, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btn_novoProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_novoProdutoActionPerformed
-        
-        CadastroNovoProduto cadastroNovoProduto = new CadastroNovoProduto();
-        cadastroNovoProduto.setVisible(true);
-        
-    }//GEN-LAST:event_btn_novoProdutoActionPerformed
+    private void btn_relatorioMensalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_relatorioMensalActionPerformed
+        RelatorioMensal relatorioMensal = new RelatorioMensal();
+        relatorioMensal.setVisible(true);
+    }//GEN-LAST:event_btn_relatorioMensalActionPerformed
 
-    private void btn_estoqueGeralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_estoqueGeralActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_estoqueGeralActionPerformed
+    private void btn_relatorioDiarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_relatorioDiarioActionPerformed
+        RelatorioDiario selecionarData = new RelatorioDiario();
+        selecionarData.setVisible(true);
+    }//GEN-LAST:event_btn_relatorioDiarioActionPerformed
 
-    private void btn_estoqueProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_estoqueProdutoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_estoqueProdutoActionPerformed
+    private void btn_cadastrarVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cadastrarVendaActionPerformed
+        CadastrarVenda cadastrarVenda = new CadastrarVenda();
+        cadastrarVenda.setVisible(true);
+    }//GEN-LAST:event_btn_cadastrarVendaActionPerformed
+
+    private void btn_gerenciarEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_gerenciarEstoqueActionPerformed
+
+        GerenciarEstoque gerenciarEstoque = new GerenciarEstoque();
+        gerenciarEstoque.setVisible(true);
+
+    }//GEN-LAST:event_btn_gerenciarEstoqueActionPerformed
 
     /**
      * @param args the command line arguments
@@ -156,11 +204,13 @@ public class TelaInicial extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_estoqueGeral;
-    private javax.swing.JButton btn_estoqueProduto;
-    private javax.swing.JButton btn_novoProduto;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton btn_cadastrarVenda;
+    private javax.swing.JButton btn_gerenciarEstoque;
+    private javax.swing.JButton btn_relatorioDiario;
+    private javax.swing.JButton btn_relatorioMensal;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lbl_icon;
     // End of variables declaration//GEN-END:variables
 }

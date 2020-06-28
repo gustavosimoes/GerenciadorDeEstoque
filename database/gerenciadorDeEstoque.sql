@@ -32,21 +32,13 @@ ENGINE = InnoDB;
 -- Table `GerenciadorDeEstoque`.`VendaDiária`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `GerenciadorDeEstoque`.`VendaDiaria` (
-  `idVenda` INT UNSIGNED NOT NULL,
+  `idVenda` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `valor` FLOAT NOT NULL,
-  `dataHora` VARCHAR(45) NOT NULL,
+  `dataVenda` DATE NOT NULL,
   PRIMARY KEY (`idVenda`))
 ENGINE = InnoDB;
 
-
--- -----------------------------------------------------
--- Table `GerenciadorDeEstoque`.`VendaMensal`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `GerenciadorDeEstoque`.`VendaMensal` (
-  `idVenda` INT UNSIGNED NOT NULL,
-  `valor` FLOAT NOT NULL,
-  PRIMARY KEY (`idVenda`))
-ENGINE = InnoDB;
+SELECT * FROM VendaDiaria WHERE MONTH(dataVenda) = 6 AND YEAR(dataVenda) = 2020;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

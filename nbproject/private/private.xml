@@ -3,12 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/gustavo/Desktop/Projetos/GerenciadorDeEstoque/src/view/CadastroNovoProduto.java</file>
-            <file>file:/home/gustavo/Desktop/Projetos/GerenciadorDeEstoque/src/view/TelaLogin.java</file>
-            <file>file:/home/gustavo/Desktop/Projetos/GerenciadorDeEstoque/src/view/TelaInicial.java</file>
             <file>file:/home/gustavo/Desktop/Projetos/GerenciadorDeEstoque/src/model/ProdutoDAO.java</file>
+            <file>file:/home/gustavo/Desktop/Projetos/GerenciadorDeEstoque/src/view/CadastrarVenda.java</file>
             <file>file:/home/gustavo/Desktop/Projetos/GerenciadorDeEstoque/src/controller/Produto.java</file>
-            <file>file:/home/gustavo/Desktop/Projetos/GerenciadorDeEstoque/src/controller/GerenciadorDeEstoque.java</file>
+            <file>file:/home/gustavo/Desktop/Projetos/GerenciadorDeEstoque/src/view/VerEstoque.java</file>
+            <file>file:/home/gustavo/Desktop/Projetos/GerenciadorDeEstoque/src/view/GerenciarEstoque.java</file>
         </group>
+        <group name="Group 20200625-08:27:54"/>
     </open-files>
 </project-private>
