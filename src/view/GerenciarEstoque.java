@@ -106,7 +106,7 @@ public class GerenciarEstoque extends javax.swing.JFrame {
 
     private void btn_novoProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_novoProdutoActionPerformed
 
-        CadastroNovoProduto cadastroNovoProduto = new CadastroNovoProduto();
+        CadastroProduto cadastroNovoProduto = new CadastroProduto();
         cadastroNovoProduto.setVisible(true);
     }//GEN-LAST:event_btn_novoProdutoActionPerformed
 

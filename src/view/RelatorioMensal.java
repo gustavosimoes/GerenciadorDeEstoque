@@ -79,6 +79,7 @@ public class RelatorioMensal extends javax.swing.JFrame {
             tbl_vendas.getColumnModel().getColumn(2).setResizable(false);
         }
 
+        btn_salvarRelatorio.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         btn_salvarRelatorio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pdf1.png"))); // NOI18N
         btn_salvarRelatorio.setText("  Salvar Relatório");
         btn_salvarRelatorio.addActionListener(new java.awt.event.ActionListener() {
@@ -173,6 +174,9 @@ public class RelatorioMensal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_salvarRelatorioActionPerformed
 
+    /**
+     * Esta função preenche a tabela com as informações das vendas.
+     */
     private void preencherTabela() {
         
         SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
@@ -195,7 +199,10 @@ public class RelatorioMensal extends javax.swing.JFrame {
         this.atualizaVendaFinal();
 
     }
-
+    
+    /**
+     * Esta função preenche a tabela com as informações das vendas.
+     */
     private void alinhaCelulas() {
         DefaultTableCellRenderer cellRender = new DefaultTableCellRenderer();
         cellRender.setHorizontalAlignment(SwingConstants.CENTER);
@@ -205,6 +212,9 @@ public class RelatorioMensal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Esta função atualiza o label com o valor total de vendas.
+     */
     private void atualizaVendaFinal() {
 
         double valorTotal = 0;

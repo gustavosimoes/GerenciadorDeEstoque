@@ -65,6 +65,7 @@
                           <EmptySpace min="-2" pref="290" max="-2" attributes="0"/>
                           <Component id="lbl_icon" min="-2" max="-2" attributes="0"/>
                       </Group>
+                      <Component id="brn_clientes" min="-2" pref="300" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="386" max="32767" attributes="0"/>
               </Group>
@@ -93,7 +94,9 @@
                       <Component id="btn_relatorioDiario" alignment="3" min="-2" pref="100" max="-2" attributes="0"/>
                       <Component id="btn_relatorioMensal" alignment="3" min="-2" pref="100" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="145" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="100" max="-2" attributes="0"/>
+                  <Component id="brn_clientes" min="-2" pref="100" max="-2" attributes="0"/>
+                  <EmptySpace pref="30" max="32767" attributes="0"/>
                   <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
@@ -168,6 +171,17 @@
               <Image iconType="3" name="/images/icone7575.png"/>
             </Property>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="brn_clientes">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Dialog" size="18" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Clientes"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="brn_clientesActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

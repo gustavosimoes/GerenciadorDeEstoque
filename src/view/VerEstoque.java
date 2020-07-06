@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import model.ProdutoDAO;
 
@@ -26,6 +28,7 @@ public class VerEstoque extends javax.swing.JFrame {
      */
     public VerEstoque() {
         initComponents();
+        this.alinhaCelulas();
         this.preencherTabela();
     }
 
@@ -55,7 +58,7 @@ public class VerEstoque extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Código", "Nome", "Descrição", "Preço", "Quantidade em Estoque"
+                "Código", "Nome", "Descrição", "Preço de Custo", "Preço", "Quantidade em Estoque"
             }
         ));
         jScrollPane1.setViewportView(tbl_produtos);
@@ -154,6 +157,21 @@ public class VerEstoque extends javax.swing.JFrame {
         });
     }
     
+    /**
+     * Esta função alinha o conteúdo das células no centro.
+     */
+    private void alinhaCelulas() {
+        DefaultTableCellRenderer cellRender = new DefaultTableCellRenderer();
+        cellRender.setHorizontalAlignment(SwingConstants.CENTER);
+
+        for (int numCol = 0; numCol < tbl_produtos.getColumnCount(); numCol++) {
+            tbl_produtos.getColumnModel().getColumn(numCol).setCellRenderer(cellRender);
+        }
+    }
+    
+    /**
+     * Esta função preenche a tabela com os produtos.
+     */
     private void preencherTabela() {
         
         DefaultTableModel dtmProdutos = (DefaultTableModel) tbl_produtos.getModel();
@@ -165,6 +183,7 @@ public class VerEstoque extends javax.swing.JFrame {
                 produtoTemp.getCodigo(),
                 produtoTemp.getNomeProduto(),
                 produtoTemp.getDescricao(),
+                String.format("%.2f",produtoTemp.getPrecoDeCusto()),
                 String.format("%.2f",produtoTemp.getPreco()),
                 produtoTemp.getQuantidadeEstoque()
             };

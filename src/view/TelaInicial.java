@@ -38,6 +38,7 @@ public class TelaInicial extends javax.swing.JFrame {
         btn_relatorioMensal = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        brn_clientes = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SS Bordados & CIA");
@@ -85,6 +86,14 @@ public class TelaInicial extends javax.swing.JFrame {
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icone7575.png"))); // NOI18N
 
+        brn_clientes.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        brn_clientes.setText("Clientes");
+        brn_clientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                brn_clientesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -102,7 +111,8 @@ public class TelaInicial extends javax.swing.JFrame {
                         .addComponent(btn_relatorioMensal, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(290, 290, 290)
-                        .addComponent(lbl_icon)))
+                        .addComponent(lbl_icon))
+                    .addComponent(brn_clientes, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(386, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -124,7 +134,9 @@ public class TelaInicial extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_relatorioDiario, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_relatorioMensal, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 145, Short.MAX_VALUE)
+                .addGap(100, 100, 100)
+                .addComponent(brn_clientes, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
@@ -161,11 +173,14 @@ public class TelaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_cadastrarVendaActionPerformed
 
     private void btn_gerenciarEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_gerenciarEstoqueActionPerformed
-
         GerenciarEstoque gerenciarEstoque = new GerenciarEstoque();
         gerenciarEstoque.setVisible(true);
-
     }//GEN-LAST:event_btn_gerenciarEstoqueActionPerformed
+
+    private void brn_clientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brn_clientesActionPerformed
+        Clientes clientes = new Clientes();
+        clientes.setVisible(true);
+    }//GEN-LAST:event_brn_clientesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -204,6 +219,7 @@ public class TelaInicial extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton brn_clientes;
     private javax.swing.JButton btn_cadastrarVenda;
     private javax.swing.JButton btn_gerenciarEstoque;
     private javax.swing.JButton btn_relatorioDiario;

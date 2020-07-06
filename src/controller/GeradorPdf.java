@@ -33,6 +33,11 @@ import model.VendaDAO;
  */
 public class GeradorPdf {
 
+    
+    /**
+     * Esta função salva o Pdf do Estoque no diretório desejado.
+     */
+    
     public boolean salvarPdfEstoque() throws FileNotFoundException, DocumentException, IOException {
 
         boolean sucesso = false;
@@ -74,12 +79,12 @@ public class GeradorPdf {
     }
 
     /**
-     * Esta função retorna a tabela de produtos a ser inserida no pdf.
+     * Esta função retorna a tabela de produtos a ser inserida no pdf do estoque.
      */
     private PdfPTable inserirTabelaEstoque(ArrayList<Produto> listaProdutos) throws DocumentException {
 
         //CRIANDO CABEÇALHO
-        PdfPTable table = new PdfPTable(new float[]{5f, 5f, 8f, 5f, 5f});
+        PdfPTable table = new PdfPTable(new float[]{5f, 5f, 8f, 5f, 5f, 5f});
 
         PdfPCell celulaCodigo = new PdfPCell(new Phrase("Código"));
         celulaCodigo.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -90,6 +95,9 @@ public class GeradorPdf {
         PdfPCell celulaDescricao = new PdfPCell(new Phrase("Descrição"));
         celulaDescricao.setHorizontalAlignment(Element.ALIGN_CENTER);
 
+        PdfPCell celulaPrecoDeCusto = new PdfPCell(new Phrase("Preço de Custo"));
+        celulaPrecoDeCusto.setHorizontalAlignment(Element.ALIGN_CENTER);
+        
         PdfPCell celulaPreco = new PdfPCell(new Phrase("Preco"));
         celulaPreco.setHorizontalAlignment(Element.ALIGN_CENTER);
 
@@ -99,31 +107,39 @@ public class GeradorPdf {
         table.addCell(celulaCodigo);
         table.addCell(celulaNome);
         table.addCell(celulaDescricao);
+        table.addCell(celulaPrecoDeCusto);
         table.addCell(celulaPreco);
         table.addCell(celulaQtdEstoque);
 
         for (Produto produto : listaProdutos) {
-            PdfPCell celula1 = new PdfPCell(new Phrase(Integer.toString(produto.getCodigo())));
+            PdfPCell celula1 = new PdfPCell(new Phrase(Long.toString(produto.getCodigo())));
             PdfPCell celula2 = new PdfPCell(new Phrase(produto.getNomeProduto()));
             PdfPCell celula3 = new PdfPCell(new Phrase(produto.getDescricao()));
-            PdfPCell celula4 = new PdfPCell(new Phrase(Double.toString(produto.getPreco())));
-            PdfPCell celula5 = new PdfPCell(new Phrase(Integer.toString(produto.getQuantidadeEstoque())));
+            PdfPCell celula4 = new PdfPCell(new Phrase(Double.toString(produto.getPrecoDeCusto())));
+            PdfPCell celula5 = new PdfPCell(new Phrase(Double.toString(produto.getPreco())));
+            PdfPCell celula6 = new PdfPCell(new Phrase(Integer.toString(produto.getQuantidadeEstoque())));
 
             celula1.setHorizontalAlignment(Element.ALIGN_CENTER);
             celula2.setHorizontalAlignment(Element.ALIGN_CENTER);
             celula3.setHorizontalAlignment(Element.ALIGN_CENTER);
             celula4.setHorizontalAlignment(Element.ALIGN_CENTER);
             celula5.setHorizontalAlignment(Element.ALIGN_CENTER);
+            celula6.setHorizontalAlignment(Element.ALIGN_CENTER);
 
             table.addCell(celula1);
             table.addCell(celula2);
             table.addCell(celula3);
             table.addCell(celula4);
             table.addCell(celula5);
+            table.addCell(celula6);
         }
         return table;
     }
 
+    /**
+     * Esta função salva o Pdf de Vendas Diárias no diretório desejado.
+     */
+    
     public void salvarPdfVendaDiaria(Date dataVenda) throws IOException {
 
         VendaDAO daoVenda = new VendaDAO();
@@ -174,6 +190,10 @@ public class GeradorPdf {
         }
     }
 
+    /**
+     * Esta função retorna a tabela de vendas a ser inserida no pdf de vendas diárias.
+     */
+    
     private PdfPTable inserirTabelaVendasDiaria(ArrayList<Venda> listaVendas) throws DocumentException {
 
         PdfPTable table = new PdfPTable(new float[]{20f, 20f});
@@ -200,6 +220,10 @@ public class GeradorPdf {
         return table;
     }
 
+    /**
+     * Esta função salva o Pdf de Vendas Mensais no diretório desejado.
+     */
+    
     public void salvarPdfVendaMensal(int mes, int ano) throws IOException {
 
         VendaDAO daoVenda = new VendaDAO();
@@ -249,6 +273,9 @@ public class GeradorPdf {
         }
     }
 
+    /**
+     * Esta função retorna a tabela de vendas a ser inserida no pdf de vendas mensais.
+     */  
     private PdfPTable inserirTabelaVendasMensal(ArrayList<Venda> listaVendas) throws DocumentException {
 
         SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
@@ -284,6 +311,10 @@ public class GeradorPdf {
         return table;
     }
 
+    /**
+     * Esta função retorna o valor total das vendas.
+     */
+    
     private double calculaValorTotalVenda(ArrayList<Venda> listaVenda) {
 
         double valorTotalVenda = 0;
@@ -295,6 +326,9 @@ public class GeradorPdf {
         return valorTotalVenda;
     }
 
+    /**
+     * Esta função retorna o mês.
+     */
     private String toStringMes(int i) {
 
         String[] nomesMeses = {"Janeiro", "Fevereiro",

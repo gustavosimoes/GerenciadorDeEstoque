@@ -15,40 +15,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 //Início da classe de conexão//
-public class ProdutoDAO {
-
-    /**
-     * *************** CONEXÃO COM O BANCO DE DADOS ***********************
-     */
-    // objeto responsável pela conexão com o servidor do banco de dados
-    Connection con;
-    // objeto responsável por preparar as consultas dinâmicas
-    PreparedStatement pst;
-    // objeto responsável por executar as consultas estáticas
-    Statement st;
-    // objeto responsável por referenciar a tabela resultante da busca
-    ResultSet rs;
-
-    // NOME DO BANCO DE DADOS
-    String database = "GerenciadorDeEstoque";
-    // URL: VERIFICAR QUAL A PORTA
-    String url = "jdbc:Mysql://localhost:3306/" + database + "?useTimezone=true&serverTimezone=UTC&useSSL=false";
-    // USUÁRIO
-    String user = "root";
-    // SENHA
-    String password = "gustavo16";
-
-    boolean sucesso = false;
-
-    // Conectar ao banco de dados
-    public void connectToDb() {
-        try {
-            con = DriverManager.getConnection(url, user, password);
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro: " + ex.getMessage(), "Mensagem de Erro", JOptionPane.ERROR_MESSAGE);
-        }
-
-    }
+public class ProdutoDAO extends GeralDAO {
 
     /**
      * Esta função insere um novo produto no estoque.
@@ -57,14 +24,15 @@ public class ProdutoDAO {
 
         connectToDb();
 
-        String sqlInserirProduto = "INSERT INTO Produto (codigo, nomeProduto, descricao, preco, qtdEstoque) values (?,?,?,?,?)";
+        String sqlInserirProduto = "INSERT INTO Produto (codigo, nomeProduto, descricao, preco, precoDeCusto, qtdEstoque) values (?,?,?,?,?,?)";
         try {
             pst = con.prepareStatement(sqlInserirProduto);
-            pst.setInt(1, novoProduto.getCodigo());
+            pst.setLong(1, novoProduto.getCodigo());
             pst.setString(2, novoProduto.getNomeProduto());
             pst.setString(3, novoProduto.getDescricao());
             pst.setDouble(4, novoProduto.getPreco());
-            pst.setInt(5, 0);
+            pst.setDouble(5, novoProduto.getPrecoDeCusto());
+            pst.setInt(6, novoProduto.getQuantidadeEstoque());
 
             pst.execute();
             sucesso = true;
@@ -86,7 +54,7 @@ public class ProdutoDAO {
     /**
      * Esta função insere a quantidade de produtos no estoque.
      */
-    public boolean inserirEstoqueProduto(int addEstoque, int codigoProduto) {
+    public boolean inserirEstoqueProduto(int addEstoque, long codigoProduto) {
 
         int estoqueAtual = this.getEstoqueProduto(codigoProduto);
         int novoEstoque = estoqueAtual + addEstoque;
@@ -97,7 +65,7 @@ public class ProdutoDAO {
         try {
             pst = con.prepareStatement(sqlUpdateEstoque);
             pst.setInt(1, novoEstoque);
-            pst.setInt(2, codigoProduto);
+            pst.setLong(2, codigoProduto);
 
             pst.execute();
             sucesso = true;
@@ -116,7 +84,10 @@ public class ProdutoDAO {
         return sucesso;
     }
 
-    public boolean removerEstoqueProduto(int delEstoque, int codigoProduto) {
+    /**
+     * Esta função remove a quantidade desejada do estoque.
+     */
+    public boolean removerEstoqueProduto(int delEstoque, long codigoProduto) {
 
         int estoqueAtual = this.getEstoqueProduto(codigoProduto);
         int novoEstoque = estoqueAtual - delEstoque;
@@ -127,7 +98,7 @@ public class ProdutoDAO {
         try {
             pst = con.prepareStatement(sqlUpdateEstoque);
             pst.setInt(1, novoEstoque);
-            pst.setInt(2, codigoProduto);
+            pst.setLong(2, codigoProduto);
 
             pst.execute();
             sucesso = true;
@@ -149,7 +120,7 @@ public class ProdutoDAO {
     /**
      * Esta função retorna a quantidade de estoque do produto específico.
      */
-    public int getEstoqueProduto(int codigoDeBarras) {
+    public int getEstoqueProduto(long codigoDeBarras) {
 
         connectToDb();
 
@@ -158,7 +129,7 @@ public class ProdutoDAO {
         String sqlGetEstoque = "SELECT qtdEstoque FROM Produto WHERE codigo = ?";
         try {
             pst = con.prepareStatement(sqlGetEstoque);
-            pst.setInt(1, codigoDeBarras);
+            pst.setLong(1, codigoDeBarras);
 
             rs = pst.executeQuery();
 
@@ -181,7 +152,10 @@ public class ProdutoDAO {
 
     }
 
-    public String getNomeProduto(int codigoDeBarras) {
+    /**
+     * Esta função retorna o nome do produto específico.
+     */
+    public String getNomeProduto(long codigoDeBarras) {
 
         connectToDb();
 
@@ -190,7 +164,7 @@ public class ProdutoDAO {
         String sqlGetNome = "SELECT nomeProduto FROM Produto WHERE codigo = ?";
         try {
             pst = con.prepareStatement(sqlGetNome);
-            pst.setInt(1, codigoDeBarras);
+            pst.setLong(1, codigoDeBarras);
 
             rs = pst.executeQuery();
 
@@ -213,7 +187,10 @@ public class ProdutoDAO {
 
     }
 
-    public String getDescricaoProduto(int codigoDeBarras) {
+    /**
+     * Esta função retorna a descrição do produto específico.
+     */
+    public String getDescricaoProduto(long codigoDeBarras) {
 
         connectToDb();
 
@@ -222,7 +199,7 @@ public class ProdutoDAO {
         String sqlGetDescricao = "SELECT descricao FROM Produto WHERE codigo = ?";
         try {
             pst = con.prepareStatement(sqlGetDescricao);
-            pst.setInt(1, codigoDeBarras);
+            pst.setLong(1, codigoDeBarras);
 
             rs = pst.executeQuery();
 
@@ -246,9 +223,9 @@ public class ProdutoDAO {
     }
 
     /**
-     * Esta função retorna o preco do produto específico.
+     * Esta função retorna o preço do produto específico.
      */
-    public double getPrecoProduto(int codigoDeBarras) {
+    public double getPrecoProduto(long codigoDeBarras) {
 
         connectToDb();
 
@@ -257,7 +234,7 @@ public class ProdutoDAO {
         String sqlGetEstoque = "SELECT preco FROM Produto WHERE codigo = ?";
         try {
             pst = con.prepareStatement(sqlGetEstoque);
-            pst.setInt(1, codigoDeBarras);
+            pst.setLong(1, codigoDeBarras);
 
             rs = pst.executeQuery();
 
@@ -280,30 +257,73 @@ public class ProdutoDAO {
 
     }
 
-    public Produto getInfoProduto(int codigoProduto) {
+    /**
+     * Esta função retorna o preço do produto específico.
+     */
+    public double getPrecoDeCustoProduto(long codigoDeBarras) {
+
+        connectToDb();
+
+        double precoDeCusto = 0;
+
+        String sqlGetPrecoDeCusto = "SELECT precoDeCusto FROM Produto WHERE codigo = ?";
+        try {
+            pst = con.prepareStatement(sqlGetPrecoDeCusto);
+            pst.setLong(1, codigoDeBarras);
+
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                precoDeCusto = rs.getDouble("precoDeCusto");
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro = " + ex.getMessage());
+            sucesso = false;
+        } finally {
+            try {   //Encerra a conexão
+                con.close();
+                pst.close();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Erro = " + ex.getMessage());
+            }
+        }
+        return precoDeCusto;
+
+    }
+
+    /**
+     * Esta função retorna um Produto com as informações do código do produto
+     * desejado.
+     */
+    public Produto getInfoProduto(long codigoProduto) {
 
         String nome = this.getNomeProduto(codigoProduto);
         String descricao = this.getDescricaoProduto(codigoProduto);
         double preco = this.getPrecoProduto(codigoProduto);
-        Produto produto = new Produto(codigoProduto, nome, descricao, preco);
-        produto.setQuantidadeEstoque(this.getEstoqueProduto(codigoProduto));
+        double precoDeCusto = this.getPrecoDeCustoProduto(codigoProduto);
+        int qtdEstoque = this.getEstoqueProduto(codigoProduto);
+        Produto produtoTemp = new Produto(qtdEstoque, codigoProduto, nome, descricao, preco, precoDeCusto);
 
-        return produto;
+        return produtoTemp;
     }
 
+    /**
+     * Esta função retorna um ArrayList com todos os produtos.
+     */
     public ArrayList<Produto> getProdutos() {
 
         ArrayList<Produto> listaProdutos = new ArrayList<>();
         Produto produtoTemp;
         int codigo, qtdEstoque;
-        double preco;
+        double preco, precoDeCusto;
         String nomeProduto, descricao;
 
         connectToDb();
 
         String sqlGetProdutos = "SELECT * FROM Produto";
         try {
-            
+
             st = con.createStatement();
             rs = st.executeQuery(sqlGetProdutos);
 
@@ -312,9 +332,10 @@ public class ProdutoDAO {
                 nomeProduto = rs.getString("nomeProduto");
                 descricao = rs.getString("descricao");
                 preco = rs.getDouble("preco");
+                precoDeCusto = rs.getDouble("precoDeCusto");
                 qtdEstoque = rs.getInt("qtdEstoque");
 
-                produtoTemp = new Produto(codigo, nomeProduto, descricao, preco, qtdEstoque);
+                produtoTemp = new Produto(qtdEstoque, codigo, nomeProduto, descricao, preco, precoDeCusto);
                 listaProdutos.add(produtoTemp);
             }
 

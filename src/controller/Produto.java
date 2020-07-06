@@ -11,10 +11,19 @@ package controller;
 public class Produto {
 
     private int quantidadeEstoque;
-    private int codigo;
+    private long codigo;
     private String nomeProduto;
     private String descricao;
     private double preco;
+    private double precoDeCusto;
+
+    public double getPrecoDeCusto() {
+        return precoDeCusto;
+    }
+
+    public void setPrecoDeCusto(double precoDeCusto) {
+        this.precoDeCusto = precoDeCusto;
+    }
 
     public int getQuantidadeEstoque() {
         return quantidadeEstoque;
@@ -24,7 +33,7 @@ public class Produto {
         this.quantidadeEstoque = quantidadeEstoque;
     }
 
-    public int getCodigo() {
+    public long getCodigo() {
         return codigo;
     }
 
@@ -56,19 +65,14 @@ public class Produto {
         this.preco = preco;
     }
 
-    public Produto(int codigo, String nomeProduto, String descricao, double preco) {
-        this.codigo = codigo;
-        this.nomeProduto = nomeProduto;
-        this.descricao = descricao;
-        this.preco = preco;
-        this.quantidadeEstoque = 0;
-    }
-    
-    public Produto(int codigo, String nomeProduto, String descricao, double preco, int quantidadeEstoque) {
-        this.codigo = codigo;
-        this.nomeProduto = nomeProduto;
-        this.descricao = descricao;
-        this.preco = preco;
+    public Produto(int quantidadeEstoque, long codigo, String nomeProduto, String descricao, double preco, double precoDeCusto) {
         this.quantidadeEstoque = quantidadeEstoque;
+        this.codigo = codigo;
+        this.nomeProduto = nomeProduto;
+        this.descricao = descricao;
+        this.preco = preco;
+        this.precoDeCusto = precoDeCusto;
     }
+
+    
 }

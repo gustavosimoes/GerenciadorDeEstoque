@@ -29,6 +29,10 @@ public class Venda {
         return dataVenda;
     }
 
+    public Venda(){
+        
+    }
+    
     public Venda(double valorVenda, java.sql.Date dataVenda) {
         this.valorVenda = valorVenda;
         this.dataVenda = dataVenda;

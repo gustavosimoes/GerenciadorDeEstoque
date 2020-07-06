@@ -20,40 +20,12 @@ import javax.swing.JOptionPane;
  *
  * @author gustavo
  */
-public class VendaDAO {
+public class VendaDAO extends GeralDAO {
 
+    
     /**
-     * *************** CONEXÃO COM O BANCO DE DADOS ***********************
+     * Esta função insere uma nova venda no banco.
      */
-    // objeto responsável pela conexão com o servidor do banco de dados
-    Connection con;
-    // objeto responsável por preparar as consultas dinâmicas
-    PreparedStatement pst;
-    // objeto responsável por executar as consultas estáticas
-    Statement st;
-    // objeto responsável por referenciar a tabela resultante da busca
-    ResultSet rs;
-
-    // NOME DO BANCO DE DADOS
-    String database = "GerenciadorDeEstoque";
-    // URL: VERIFICAR QUAL A PORTA
-    String url = "jdbc:Mysql://localhost:3306/" + database + "?useTimezone=true&serverTimezone=UTC&useSSL=false";
-    // USUÁRIO
-    String user = "root";
-    // SENHA
-    String password = "gustavo16";
-
-    boolean sucesso = false;
-
-    // Conectar ao banco de dados
-    public void connectToDb() {
-        try {
-            con = DriverManager.getConnection(url, user, password);
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro: " + ex.getMessage(), "Mensagem de Erro", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
     public boolean inserirNovaVenda(Venda novaVenda) {
 
         connectToDb();
@@ -81,6 +53,9 @@ public class VendaDAO {
         return sucesso;
     }
 
+    /**
+     * Esta função retorna um ArrayList de Vendas, com as vendas de uma data específica (dia).
+     */
     public ArrayList<Venda> getVendasDiarias(Date dataVenda) {
         ArrayList<Venda> listaVendas = new ArrayList<>();
         Venda vendaTemp;
@@ -115,7 +90,10 @@ public class VendaDAO {
 
         return listaVendas;
     }
-
+    
+    /**
+     * Esta função retorna um ArrayList de Vendas, com as vendas de uma data específica (mês).
+     */
     public ArrayList<Venda> getVendasMensais(int mes, int ano) {
         ArrayList<Venda> listaVendas = new ArrayList<>();
         Venda vendaTemp;
@@ -152,5 +130,42 @@ public class VendaDAO {
         }
 
         return listaVendas;
+    }
+    
+    public void atribuirVendaPrazo(Venda novaVenda, String nomeCliente){
+        this.inserirNovaVenda(novaVenda);
+        
+        connectToDb();
+        ClienteDAO daoCliente = new ClienteDAO();
+        int idCliente = daoCliente.getIdCliente(nomeCliente);
+        int idVenda = 0;
+        String sqlVendaPrazo = "UPDATE VendaDiaria SET Cliente_idCliente = ? WHERE idVenda = ?";
+        String sqlGetIdVenda = "SELECT * FROM VendaDiaria WHERE idVenda = (SELECT MAX(idVenda) FROM VendaDiaria)";
+
+        try {
+            st = con.createStatement();
+            rs = st.executeQuery(sqlGetIdVenda);
+            while (rs.next()) {
+                idVenda = rs.getInt("idVenda");
+            }
+            
+            pst = con.prepareStatement(sqlVendaPrazo);
+            pst.setInt(1, idCliente);
+            pst.setInt(2, idVenda);
+
+            pst.execute();
+            sucesso = true;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro = " + ex.getMessage());
+            sucesso = false;
+        } finally {
+            try {   //Encerra a conexão
+                con.close();
+                pst.close();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Erro = " + ex.getMessage());
+            }
+        }
+        
     }
 }

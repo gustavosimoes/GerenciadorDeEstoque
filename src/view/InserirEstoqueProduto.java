@@ -165,7 +165,7 @@ public class InserirEstoqueProduto extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (!txt_codigoProduto.getText().isEmpty() && !txt_addEstoque.getText().isEmpty()) {
             ProdutoDAO daoProduto = new ProdutoDAO();
-            int codigo = Integer.parseInt(txt_codigoProduto.getText());
+            long codigo = Long.parseLong(txt_codigoProduto.getText());
             int addEstoque = Integer.parseInt(txt_addEstoque.getText());
             if (daoProduto.inserirEstoqueProduto(addEstoque, codigo)) {
                 JOptionPane.showMessageDialog(null, "Estoque Inserido");
@@ -186,7 +186,7 @@ public class InserirEstoqueProduto extends javax.swing.JFrame {
 
         if (!txt_codigoProduto.getText().isEmpty()) {
             ProdutoDAO daoProduto = new ProdutoDAO();
-            int codigo = Integer.parseInt(txt_codigoProduto.getText());
+            long codigo = Long.parseLong(txt_codigoProduto.getText());
             Produto produto = daoProduto.getInfoProduto(codigo);
 
             lbl_nome.setText("Nome: " + produto.getNomeProduto());

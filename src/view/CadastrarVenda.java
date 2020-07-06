@@ -57,6 +57,7 @@ public class CadastrarVenda extends javax.swing.JFrame {
         lbl_txtValorVar = new javax.swing.JLabel();
         lbl_txtValorDescontoVar = new javax.swing.JLabel();
         btn_removerDesconto = new javax.swing.JButton();
+        check_vendaPrazo = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -156,6 +157,9 @@ public class CadastrarVenda extends javax.swing.JFrame {
             }
         });
 
+        check_vendaPrazo.setBackground(new java.awt.Color(234, 211, 161));
+        check_vendaPrazo.setText("Venda À Prazo");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -175,6 +179,7 @@ public class CadastrarVenda extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btn_excluirProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btn_adicionarProduto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -191,19 +196,20 @@ public class CadastrarVenda extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lbl_txtValorFinalVar, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(40, 40, 40)))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btn_removerDesconto)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(btn_aplicarDesconto)
-                                        .addGap(26, 26, 26)
-                                        .addComponent(lbl_txtValorDescontoFix, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(lbl_txtValorDescontoVar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(10, 10, 10))
-                            .addComponent(btn_CadastrarVenda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addComponent(jScrollPane1))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(check_vendaPrazo)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(btn_removerDesconto)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                            .addComponent(btn_aplicarDesconto)
+                                            .addGap(26, 26, 26)
+                                            .addComponent(lbl_txtValorDescontoFix, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(lbl_txtValorDescontoVar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGap(10, 10, 10))
+                                .addComponent(btn_CadastrarVenda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addGap(45, 45, 45))
         );
         jPanel1Layout.setVerticalGroup(
@@ -239,7 +245,9 @@ public class CadastrarVenda extends javax.swing.JFrame {
                         .addComponent(btn_aplicarDesconto)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_removerDesconto)
-                .addGap(70, 70, 70)
+                .addGap(28, 28, 28)
+                .addComponent(check_vendaPrazo)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_CadastrarVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbl_txtValorFinalVar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -271,49 +279,19 @@ public class CadastrarVenda extends javax.swing.JFrame {
 
     private void btn_CadastrarVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CadastrarVendaActionPerformed
 
-        //inserindo a venda no banco de dados
-        double valorVendaFinal = Double.parseDouble(lbl_txtValorFinalVar.getText().replace(",", "."));
-        long millis = System.currentTimeMillis();
-        java.sql.Date dataVenda = new java.sql.Date(millis);
-        boolean vendaOk = true;
-
-        Venda venda = new Venda(valorVendaFinal, dataVenda);
-        VendaDAO daoVenda = new VendaDAO();
-
-        //atualizando o estoque de cada produto
-        //DefaultTableModel dtmEquipes = (DefaultTableModel) tbl_vendas.getModel();
-        for (int i = 0; i < tbl_vendas.getRowCount(); i++) {
-
-            int qtdLinha = (int) tbl_vendas.getModel().getValueAt(i, 2);
-            int codigoProduto = (int) tbl_vendas.getModel().getValueAt(i, 3);
-            ProdutoDAO daoProduto = new ProdutoDAO();
-            if (daoProduto.getEstoqueProduto(codigoProduto) < qtdLinha) {
-                vendaOk = false;
-            }
+        if(!check_vendaPrazo.isSelected()){
+            this.cadastrarVenda();
+        } else{
+            AtribuirVendaPrazo atribuirVendaPrazo = new AtribuirVendaPrazo(this.construtorVenda());
+            atribuirVendaPrazo.setVisible(true);
         }
-
-        if (vendaOk) {
-            for (int i = 0; i < tbl_vendas.getRowCount(); i++) {
-                int qtdLinha = (int) tbl_vendas.getModel().getValueAt(i, 2);
-                int codigoProduto = (int) tbl_vendas.getModel().getValueAt(i, 3);
-                ProdutoDAO daoProduto = new ProdutoDAO();
-                daoProduto.removerEstoqueProduto(qtdLinha, codigoProduto);
-            }
-            if (daoVenda.inserirNovaVenda(venda)) {
-                JOptionPane.showMessageDialog(null, "Venda Confirmada.");
-            }
-        }else{
-            JOptionPane.showMessageDialog(null, "Algum dos produtos que você está tentando vender não tem estoque!\n Por favor verifique!");
-        }
-
 
     }//GEN-LAST:event_btn_CadastrarVendaActionPerformed
 
     private void btn_adicionarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_adicionarProdutoActionPerformed
-
         ProdutoDAO daoProduto = new ProdutoDAO();
         DefaultTableModel dtmVendas = (DefaultTableModel) tbl_vendas.getModel();
-        int codigo = Integer.parseInt(txt_codigoProduto.getText());
+        long codigo = Long.parseLong(txt_codigoProduto.getText());
         int quantidade = Integer.parseInt(txt_quantidade.getText());
         double valorVenda = 0;
 
@@ -345,7 +323,6 @@ public class CadastrarVenda extends javax.swing.JFrame {
 
     private void btn_excluirProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_excluirProdutoActionPerformed
         if (tbl_vendas.getSelectedRow() != -1) {
-
             double valorVenda = 0;
             DefaultTableModel dtmEquipes = (DefaultTableModel) tbl_vendas.getModel();
             dtmEquipes.removeRow(tbl_vendas.getSelectedRow());
@@ -377,7 +354,50 @@ public class CadastrarVenda extends javax.swing.JFrame {
         txt_porcDesconto.setText("0");
         this.atualizaVendaFinal();
     }//GEN-LAST:event_btn_removerDescontoActionPerformed
+    
+    private Venda construtorVenda(){
+        double valorVendaFinal = Double.parseDouble(lbl_txtValorFinalVar.getText().replace(",", "."));
+        long millis = System.currentTimeMillis();
+        java.sql.Date dataVenda = new java.sql.Date(millis);
 
+        Venda venda = new Venda(valorVendaFinal, dataVenda);
+        return venda;
+    }
+    private void cadastrarVenda(){
+        //inserindo a venda no banco de dados
+        Venda venda = this.construtorVenda();
+        boolean vendaOk = true;
+        VendaDAO daoVenda = new VendaDAO();
+
+        //atualizando o estoque de cada produto
+        for (int i = 0; i < tbl_vendas.getRowCount(); i++) {
+
+            int qtdLinha = (int) tbl_vendas.getModel().getValueAt(i, 2);
+            long codigoProduto = (long) tbl_vendas.getModel().getValueAt(i, 3);
+            ProdutoDAO daoProduto = new ProdutoDAO();
+            if (daoProduto.getEstoqueProduto(codigoProduto) < qtdLinha) {
+                vendaOk = false;
+            }
+        }
+
+        if (vendaOk) {
+            for (int i = 0; i < tbl_vendas.getRowCount(); i++) {
+                int qtdLinha = (int) tbl_vendas.getModel().getValueAt(i, 2);
+                long codigoProduto = (long) tbl_vendas.getModel().getValueAt(i, 3);
+                ProdutoDAO daoProduto = new ProdutoDAO();
+                daoProduto.removerEstoqueProduto(qtdLinha, codigoProduto);
+            }
+            if (daoVenda.inserirNovaVenda(venda)) {
+                JOptionPane.showMessageDialog(null, "Venda Confirmada.");
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Algum dos produtos que você está tentando vender não tem estoque!\n Por favor verifique!");
+        }
+    }
+    
+    /**
+     * Esta função atualiza a lbl com o valor final da venda.
+     */
     private void atualizaVendaFinal() {
 
         double valorVenda = Double.parseDouble(lbl_txtValorVar.getText().replace(",", "."));
@@ -431,6 +451,7 @@ public class CadastrarVenda extends javax.swing.JFrame {
     private javax.swing.JButton btn_aplicarDesconto;
     private javax.swing.JButton btn_excluirProduto;
     private javax.swing.JButton btn_removerDesconto;
+    private javax.swing.JCheckBox check_vendaPrazo;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

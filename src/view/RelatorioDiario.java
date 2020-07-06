@@ -158,35 +158,29 @@ public class RelatorioDiario extends javax.swing.JFrame {
 
     private void btn_mostrarVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_mostrarVendasActionPerformed
 
-        if (data_dataVendaDiaria.getDate() != null) {
-            this.preencherTabela();
-        } else {
+        if (data_dataVendaDiaria.getDate() == null) {
             data_dataVendaDiaria.setDate(new Date());
-            this.preencherTabela();
         }
+            this.preencherTabela();
     }//GEN-LAST:event_btn_mostrarVendasActionPerformed
 
     private void btn_salvarRelatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_salvarRelatorioActionPerformed
 
         GeradorPdf geradorPdf = new GeradorPdf();
-        if (data_dataVendaDiaria.getDate() != null) {
-            try {
-                geradorPdf.salvarPdfVendaDiaria(data_dataVendaDiaria.getDate());
-            } catch (IOException ex) {
-                Logger.getLogger(RelatorioDiario.class.getName()).log(Level.SEVERE, null, ex);
+        try {
+            if (data_dataVendaDiaria.getDate() == null) {
+                data_dataVendaDiaria.setDate(new Date());
             }
-        } else {
-            data_dataVendaDiaria.setDate(new Date());
-            try {
-                geradorPdf.salvarPdfVendaDiaria(data_dataVendaDiaria.getDate());
-            } catch (IOException ex) {
-                Logger.getLogger(RelatorioDiario.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            geradorPdf.salvarPdfVendaDiaria(data_dataVendaDiaria.getDate());
+        } catch (IOException ex) {
+            Logger.getLogger(RelatorioDiario.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-
     }//GEN-LAST:event_btn_salvarRelatorioActionPerformed
-
+    
+    
+    /**
+     * Esta função preenche a tabela com as informações das vendas.
+     */
     private void preencherTabela() {
         Date dataVendaDiaria = data_dataVendaDiaria.getDate();
         java.sql.Date dataSql = new java.sql.Date(dataVendaDiaria.getTime());
@@ -210,6 +204,9 @@ public class RelatorioDiario extends javax.swing.JFrame {
 
     }
 
+    /**
+     * Esta função alinha o conteúdo das células no centro.
+     */
     private void alinhaCelulas() {
         DefaultTableCellRenderer cellRender = new DefaultTableCellRenderer();
         cellRender.setHorizontalAlignment(SwingConstants.CENTER);
@@ -219,10 +216,11 @@ public class RelatorioDiario extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Esta função atualiza o label com o valor total de vendas.
+     */
     private void atualizaVendaFinal() {
-
         double valorTotal = 0;
-
         for (int i = 0; i < tbl_vendas.getRowCount(); i++) {
             String strValorLinha = (String) tbl_vendas.getModel().getValueAt(i, 1);
             double valorLinha = Double.parseDouble(strValorLinha.replace(",", "."));
@@ -247,16 +245,21 @@ public class RelatorioDiario extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RelatorioDiario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RelatorioDiario.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RelatorioDiario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RelatorioDiario.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RelatorioDiario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RelatorioDiario.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RelatorioDiario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RelatorioDiario.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
