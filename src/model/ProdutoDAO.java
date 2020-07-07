@@ -315,10 +315,10 @@ public class ProdutoDAO extends GeralDAO {
 
         ArrayList<Produto> listaProdutos = new ArrayList<>();
         Produto produtoTemp;
-        int codigo, qtdEstoque;
+        long codigo; 
+        int qtdEstoque;
         double preco, precoDeCusto;
         String nomeProduto, descricao;
-
         connectToDb();
 
         String sqlGetProdutos = "SELECT * FROM Produto";
@@ -328,13 +328,12 @@ public class ProdutoDAO extends GeralDAO {
             rs = st.executeQuery(sqlGetProdutos);
 
             while (rs.next()) {
-                codigo = rs.getInt("codigo");
+                codigo = rs.getLong("codigo");
                 nomeProduto = rs.getString("nomeProduto");
                 descricao = rs.getString("descricao");
                 preco = rs.getDouble("preco");
                 precoDeCusto = rs.getDouble("precoDeCusto");
                 qtdEstoque = rs.getInt("qtdEstoque");
-
                 produtoTemp = new Produto(qtdEstoque, codigo, nomeProduto, descricao, preco, precoDeCusto);
                 listaProdutos.add(produtoTemp);
             }

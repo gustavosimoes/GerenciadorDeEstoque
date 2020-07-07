@@ -302,7 +302,7 @@ public class CadastrarVenda extends javax.swing.JFrame {
 
             Object[] dados = {
                 produto.getNomeProduto(),
-                "R$" + String.format("%.2f", produto.getPreco()),
+                "R$ " + String.format("%.2f", produto.getPreco()),
                 quantidade,
                 codigo
             };
@@ -310,8 +310,8 @@ public class CadastrarVenda extends javax.swing.JFrame {
             dtmVendas.addRow(dados);
 
             for (int i = 0; i < tbl_vendas.getRowCount(); i++) {
-
-                double precoLinha = (double) tbl_vendas.getModel().getValueAt(i, 1);
+                String strPrecoLinha = (String) tbl_vendas.getModel().getValueAt(i, 1);
+                double precoLinha = Double.parseDouble(strPrecoLinha.replace(",", ".").replace("R$ ", ""));
                 int qtdLinha = (int) tbl_vendas.getModel().getValueAt(i, 2);
                 double valorLinha = precoLinha * (double) qtdLinha;
 
