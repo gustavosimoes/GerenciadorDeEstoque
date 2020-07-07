@@ -6,9 +6,13 @@
 package view;
 
 import controller.Cliente;
+import controller.GeradorPdf;
 import controller.Venda;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -28,6 +32,9 @@ public class VizualizaVendasPorCliente extends javax.swing.JFrame {
         initComponents();
         this.preencherTabela(nomeCliente);
         this.preencheDados(nomeCliente);
+        this.alinhaCelulas();
+        this.atualizaValorTotal();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -47,8 +54,10 @@ public class VizualizaVendasPorCliente extends javax.swing.JFrame {
         lbl_cpf = new javax.swing.JLabel();
         lbl_endereco = new javax.swing.JLabel();
         lbl_telefone = new javax.swing.JLabel();
+        txt_valorTotal = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(234, 211, 161));
 
@@ -79,33 +88,42 @@ public class VizualizaVendasPorCliente extends javax.swing.JFrame {
             }
         });
 
+        lbl_nome.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         lbl_nome.setText("Nome:");
 
+        lbl_cpf.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         lbl_cpf.setText("CPF:");
 
+        lbl_endereco.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         lbl_endereco.setText("Endereço:");
 
+        lbl_telefone.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         lbl_telefone.setText("Telefone:");
+
+        txt_valorTotal.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        txt_valorTotal.setText("Valor Total: RS 0000,00");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(120, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(btn_salvarRelatorio)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 643, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbl_nome, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lbl_endereco))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lbl_cpf, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lbl_telefone, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE))))
-                .addGap(120, 120, 120))
+                .addContainerGap(100, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(btn_salvarRelatorio)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 643, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lbl_nome, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lbl_endereco))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(lbl_cpf, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lbl_telefone, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE))))
+                    .addComponent(txt_valorTotal, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(100, 100, 100))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -120,9 +138,11 @@ public class VizualizaVendasPorCliente extends javax.swing.JFrame {
                     .addComponent(lbl_telefone))
                 .addGap(34, 34, 34)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 457, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
+                .addGap(18, 18, 18)
+                .addComponent(txt_valorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                 .addComponent(btn_salvarRelatorio, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addGap(50, 50, 50))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -133,7 +153,9 @@ public class VizualizaVendasPorCliente extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -189,9 +211,29 @@ public class VizualizaVendasPorCliente extends javax.swing.JFrame {
             lbl_telefone.setText("Telefone: -");
         }
     }
+    
+    private void atualizaValorTotal() {
+        double valorTotal = 0;
+        for (int i = 0; i < tbl_VendasPorCliente.getRowCount(); i++) {
+            String strValorLinha = (String) tbl_VendasPorCliente.getModel().getValueAt(i, 1);
+            double valorLinha = Double.parseDouble(strValorLinha.replace(",", ".").replace("R$ ", ""));
+            valorTotal += valorLinha;
+        }
+
+        String strValorTotal = String.format("%.2f", valorTotal);
+        txt_valorTotal.setText("R$  " + strValorTotal);
+    }
+
 
     private void btn_salvarRelatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_salvarRelatorioActionPerformed
-
+        GeradorPdf geradorPdf = new GeradorPdf();
+        String strValorTotal = txt_valorTotal.getText().replace("R$ ", "").replace(",", ".");
+        String nomeCliente = lbl_nome.getText().replace("Nome: ", "");
+        try {
+            geradorPdf.salvarVendasPorCliente(nomeCliente, strValorTotal);
+        } catch (IOException ex) {
+            Logger.getLogger(VizualizaVendasPorCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btn_salvarRelatorioActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -203,5 +245,6 @@ public class VizualizaVendasPorCliente extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_nome;
     private javax.swing.JLabel lbl_telefone;
     private javax.swing.JTable tbl_VendasPorCliente;
+    private javax.swing.JLabel txt_valorTotal;
     // End of variables declaration//GEN-END:variables
 }

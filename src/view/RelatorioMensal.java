@@ -31,6 +31,7 @@ public class RelatorioMensal extends javax.swing.JFrame {
     public RelatorioMensal() {
         initComponents();
         this.alinhaCelulas();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -55,6 +56,7 @@ public class RelatorioMensal extends javax.swing.JFrame {
         txt_totalVendasFix = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(234, 211, 161));
 

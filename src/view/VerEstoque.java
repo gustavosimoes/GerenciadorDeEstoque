@@ -30,6 +30,7 @@ public class VerEstoque extends javax.swing.JFrame {
         initComponents();
         this.alinhaCelulas();
         this.preencherTabela();
+        this.setLocationRelativeTo(null);
     }
 
     
@@ -49,6 +50,7 @@ public class VerEstoque extends javax.swing.JFrame {
         btn_salvarPdf = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(234, 211, 161));
 

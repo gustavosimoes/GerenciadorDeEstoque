@@ -16,6 +16,7 @@ public class GerenciarEstoque extends javax.swing.JFrame {
      */
     public GerenciarEstoque() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -34,6 +35,7 @@ public class GerenciarEstoque extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(750, 470));
+        setResizable(false);
 
         jPanel2.setBackground(new java.awt.Color(234, 211, 161));
         jPanel2.setPreferredSize(new java.awt.Dimension(750, 470));

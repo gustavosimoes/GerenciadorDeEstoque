@@ -20,6 +20,7 @@ public class InserirEstoqueProduto extends javax.swing.JFrame {
      */
     public InserirEstoqueProduto() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -47,6 +48,7 @@ public class InserirEstoqueProduto extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Inserir Estoque");
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(234, 211, 161));
         jPanel1.setFont(new java.awt.Font("Fira Code", 0, 12)); // NOI18N

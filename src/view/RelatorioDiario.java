@@ -32,6 +32,7 @@ public class RelatorioDiario extends javax.swing.JFrame {
     public RelatorioDiario() {
         initComponents();
         this.alinhaCelulas();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -55,6 +56,7 @@ public class RelatorioDiario extends javax.swing.JFrame {
         txt_totalVendasVar = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(234, 211, 161));
 

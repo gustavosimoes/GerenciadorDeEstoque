@@ -6,8 +6,13 @@
 package view;
 
 import controller.Cliente;
+import controller.GeradorPdf;
 import controller.Venda;
+import java.io.IOException;
+import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -28,6 +33,7 @@ public class VizualizaVendasPrazo extends javax.swing.JFrame {
         ClienteDAO daoCliente = new ClienteDAO();
         this.preencherTabela(daoCliente.listaClientes());
         this.alinhaCelulas();
+        this.setLocationRelativeTo(null);
 
     }
 
@@ -49,8 +55,10 @@ public class VizualizaVendasPrazo extends javax.swing.JFrame {
         tbl_vendasPrazoGeral = new javax.swing.JTable();
         btn_salvarRelatorio = new javax.swing.JButton();
         btn_vizualizarSelecionado = new javax.swing.JButton();
+        txt_valorTotalPrazo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jPanel2.setBackground(new java.awt.Color(234, 211, 161));
 
@@ -94,7 +102,7 @@ public class VizualizaVendasPrazo extends javax.swing.JFrame {
 
         btn_salvarRelatorio.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         btn_salvarRelatorio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pdf1.png"))); // NOI18N
-        btn_salvarRelatorio.setText("  Salvar Relatório");
+        btn_salvarRelatorio.setText("Salvar Relatório Completo");
         btn_salvarRelatorio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_salvarRelatorioActionPerformed(evt);
@@ -109,24 +117,29 @@ public class VizualizaVendasPrazo extends javax.swing.JFrame {
             }
         });
 
+        txt_valorTotalPrazo.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        txt_valorTotalPrazo.setText("R$ 0,00");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap(105, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(btn_vizualizarSelecionado)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btn_salvarRelatorio))
-                    .addComponent(jScrollPane1)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(txt_filtrar, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(50, 50, 50)
-                        .addComponent(btn_filtarClientes)
-                        .addGap(50, 50, 50)
-                        .addComponent(btn_mostrarTodos, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txt_valorTotalPrazo, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addComponent(btn_vizualizarSelecionado)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btn_salvarRelatorio))
+                        .addComponent(jScrollPane1)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addComponent(txt_filtrar, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(50, 50, 50)
+                            .addComponent(btn_filtarClientes)
+                            .addGap(50, 50, 50)
+                            .addComponent(btn_mostrarTodos, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(105, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -139,11 +152,13 @@ public class VizualizaVendasPrazo extends javax.swing.JFrame {
                     .addComponent(btn_mostrarTodos))
                 .addGap(26, 26, 26)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 457, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(18, 18, 18)
+                .addComponent(txt_valorTotalPrazo, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_salvarRelatorio, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_vizualizarSelecionado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(127, Short.MAX_VALUE))
+                .addGap(90, 90, 90))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -191,7 +206,12 @@ public class VizualizaVendasPrazo extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_mostrarTodosActionPerformed
 
     private void btn_salvarRelatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_salvarRelatorioActionPerformed
-
+        GeradorPdf geradorPdf = new GeradorPdf();
+        try {
+            geradorPdf.salvarVendasPrazo(txt_valorTotalPrazo.getText());
+        } catch (IOException ex) {
+            Logger.getLogger(VizualizaVendasPrazo.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }//GEN-LAST:event_btn_salvarRelatorioActionPerformed
 
@@ -217,11 +237,6 @@ public class VizualizaVendasPrazo extends javax.swing.JFrame {
         }
     }
 
-    private void preencheDados(){
-        
-        
-    }
-    
     private void preencherTabela(ArrayList<Cliente> listaClientes) {
         ArrayList<Venda> listaVendas = new ArrayList<>();
         ClienteDAO daoCliente = new ClienteDAO();
@@ -240,6 +255,7 @@ public class VizualizaVendasPrazo extends javax.swing.JFrame {
 
             dtmVendasGeral.addRow(dados);
         }
+        atualizaVendaPrazoTotal();
     }
 
     private ArrayList<Cliente> filtrarTabela() {
@@ -249,11 +265,38 @@ public class VizualizaVendasPrazo extends javax.swing.JFrame {
         ArrayList<Cliente> listaFiltrada = new ArrayList<>();
 
         for (Cliente cliente : daoCliente.listaClientes()) {
-            if (cliente.getNome().contains(txt_filtrar.getText())) {
+            
+            String str1 = this.formataStringComp(cliente.getNome());
+            String str2 = this.formataStringComp(txt_filtrar.getText());
+            if (str1.contains(str2)) {
                 listaFiltrada.add(cliente);
             }
         }
         return listaFiltrada;
+    }
+    
+    private void atualizaVendaPrazoTotal() {
+        double valorTotal = 0;
+        for (int i = 0; i < tbl_vendasPrazoGeral.getRowCount(); i++) {
+            String strValorLinha = (String) tbl_vendasPrazoGeral.getModel().getValueAt(i, 1);
+            double valorLinha = Double.parseDouble(strValorLinha.replace(",", ".").replace("R$ ", ""));
+            valorTotal += valorLinha;
+        }
+
+        String strValorTotal = String.format("%.2f", valorTotal);
+        txt_valorTotalPrazo.setText("R$  " + strValorTotal);
+    }
+    
+    
+    private String formataStringComp(String str) {
+        str = this.removerAcentos(str.toLowerCase());
+        return str;
+    }
+
+    private static String removerAcentos(String str) {
+        str = Normalizer.normalize(str, Normalizer.Form.NFD);
+        str = str.replaceAll("[^\\p{ASCII}]", "");
+        return str;
     }
 
     /**
@@ -302,5 +345,6 @@ public class VizualizaVendasPrazo extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tbl_vendasPrazoGeral;
     private javax.swing.JTextField txt_filtrar;
+    private javax.swing.JLabel txt_valorTotalPrazo;
     // End of variables declaration//GEN-END:variables
 }

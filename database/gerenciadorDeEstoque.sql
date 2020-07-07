@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `GerenciadorDeEstoque`.`Cliente` (
   `nome` VARCHAR(20) NOT NULL UNIQUE,
   `cpf` BIGINT NULL DEFAULT NULL,
   `telefone` BIGINT NULL DEFAULT NULL,
-  `endereco` VARCHAR(30) NULL DEFAULT NULL,
+  `endereco` VARCHAR(100) NULL DEFAULT NULL,
   PRIMARY KEY (`idCliente`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
@@ -55,6 +55,7 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 select * from Produto;
+select * from VendaDiaria;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

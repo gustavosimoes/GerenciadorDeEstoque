@@ -60,6 +60,7 @@ public class CadastrarVenda extends javax.swing.JFrame {
         check_vendaPrazo = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(234, 211, 161));
@@ -279,9 +280,9 @@ public class CadastrarVenda extends javax.swing.JFrame {
 
     private void btn_CadastrarVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CadastrarVendaActionPerformed
 
-        if(!check_vendaPrazo.isSelected()){
+        if (!check_vendaPrazo.isSelected()) {
             this.cadastrarVenda();
-        } else{
+        } else {
             AtribuirVendaPrazo atribuirVendaPrazo = new AtribuirVendaPrazo(this.construtorVenda());
             atribuirVendaPrazo.setVisible(true);
         }
@@ -291,34 +292,39 @@ public class CadastrarVenda extends javax.swing.JFrame {
     private void btn_adicionarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_adicionarProdutoActionPerformed
         ProdutoDAO daoProduto = new ProdutoDAO();
         DefaultTableModel dtmVendas = (DefaultTableModel) tbl_vendas.getModel();
-        long codigo = Long.parseLong(txt_codigoProduto.getText());
-        int quantidade = Integer.parseInt(txt_quantidade.getText());
-        double valorVenda = 0;
+        if (!txt_codigoProduto.getText().replace(" ", "").isEmpty()) {
 
-        Produto produto = daoProduto.getInfoProduto(codigo);
+            long codigo = Long.parseLong(txt_codigoProduto.getText());
+            int quantidade = Integer.parseInt(txt_quantidade.getText());
+            double valorVenda = 0;
 
-        Object[] dados = {
-            produto.getNomeProduto(),
-            produto.getPreco(),
-            quantidade,
-            codigo
-        };
+            Produto produto = daoProduto.getInfoProduto(codigo);
 
-        dtmVendas.addRow(dados);
+            Object[] dados = {
+                produto.getNomeProduto(),
+                "R$" + String.format("%.2f", produto.getPreco()),
+                quantidade,
+                codigo
+            };
 
-        for (int i = 0; i < tbl_vendas.getRowCount(); i++) {
+            dtmVendas.addRow(dados);
 
-            double precoLinha = (double) tbl_vendas.getModel().getValueAt(i, 1);
-            int qtdLinha = (int) tbl_vendas.getModel().getValueAt(i, 2);
-            double valorLinha = precoLinha * (double) qtdLinha;
+            for (int i = 0; i < tbl_vendas.getRowCount(); i++) {
 
-            valorVenda += valorLinha;
+                double precoLinha = (double) tbl_vendas.getModel().getValueAt(i, 1);
+                int qtdLinha = (int) tbl_vendas.getModel().getValueAt(i, 2);
+                double valorLinha = precoLinha * (double) qtdLinha;
+
+                valorVenda += valorLinha;
+            }
+
+            String strValorVenda = String.format("%.2f", valorVenda);
+            lbl_txtValorVar.setText(strValorVenda);
+            txt_quantidade.setText("1");
+            this.atualizaVendaFinal();
+        } else{
+            JOptionPane.showMessageDialog(null, "Por favor insira um código de produto.");
         }
-
-        String strValorVenda = String.format("%.2f", valorVenda);
-        lbl_txtValorVar.setText(strValorVenda);
-        txt_quantidade.setText("1");
-        this.atualizaVendaFinal();
     }//GEN-LAST:event_btn_adicionarProdutoActionPerformed
 
     private void btn_excluirProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_excluirProdutoActionPerformed
@@ -354,8 +360,8 @@ public class CadastrarVenda extends javax.swing.JFrame {
         txt_porcDesconto.setText("0");
         this.atualizaVendaFinal();
     }//GEN-LAST:event_btn_removerDescontoActionPerformed
-    
-    private Venda construtorVenda(){
+
+    private Venda construtorVenda() {
         double valorVendaFinal = Double.parseDouble(lbl_txtValorFinalVar.getText().replace(",", "."));
         long millis = System.currentTimeMillis();
         java.sql.Date dataVenda = new java.sql.Date(millis);
@@ -363,7 +369,8 @@ public class CadastrarVenda extends javax.swing.JFrame {
         Venda venda = new Venda(valorVendaFinal, dataVenda);
         return venda;
     }
-    private void cadastrarVenda(){
+
+    private void cadastrarVenda() {
         //inserindo a venda no banco de dados
         Venda venda = this.construtorVenda();
         boolean vendaOk = true;
@@ -390,11 +397,11 @@ public class CadastrarVenda extends javax.swing.JFrame {
             if (daoVenda.inserirNovaVenda(venda)) {
                 JOptionPane.showMessageDialog(null, "Venda Confirmada.");
             }
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "Algum dos produtos que você está tentando vender não tem estoque!\n Por favor verifique!");
         }
     }
-    
+
     /**
      * Esta função atualiza a lbl com o valor final da venda.
      */

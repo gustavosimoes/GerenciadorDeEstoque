@@ -7,6 +7,7 @@ package view;
 
 import controller.Cliente;
 import controller.Venda;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import model.ClienteDAO;
 import model.VendaDAO;
@@ -18,7 +19,7 @@ import model.VendaDAO;
 public class AtribuirVendaPrazo extends javax.swing.JFrame {
 
     Venda vendaTemp = new Venda();
-    
+
     /**
      * Creates new form NovaVendaPrazo
      */
@@ -26,6 +27,7 @@ public class AtribuirVendaPrazo extends javax.swing.JFrame {
         initComponents();
         this.vendaTemp = vendaTemp;
         this.mostrarTodosClientes();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -47,6 +49,7 @@ public class AtribuirVendaPrazo extends javax.swing.JFrame {
         btn_mostrarTodos = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(234, 211, 161));
 
@@ -171,32 +174,44 @@ public class AtribuirVendaPrazo extends javax.swing.JFrame {
         this.mostrarTodosClientes();
     }//GEN-LAST:event_btn_mostrarTodosActionPerformed
 
-    public void mostrarTodosClientes(){
+    public void mostrarTodosClientes() {
         cb_listaClientes.removeAllItems();
         ClienteDAO daoCliente = new ClienteDAO();
-        for(Cliente cliente : daoCliente.listaClientes()){
+        for (Cliente cliente : daoCliente.listaClientes()) {
             cb_listaClientes.addItem(cliente.getNome());
         }
-        
+
         btn_mostrarTodos.setVisible(false);
     }
-    
-    public void filtarClientes(){
+
+    public void filtarClientes() {
         ClienteDAO daoCliente = new ClienteDAO();
-        
-        for(Cliente cliente : daoCliente.listaClientes()){
-            if(cliente.getNome().contains(txt_filtrar.getText())){
+
+        for (Cliente cliente : daoCliente.listaClientes()) {
+            String str1 = this.formataStringComp(cliente.getNome());
+            String str2 = this.formataStringComp(txt_filtrar.getText());
+            if (str1.contains(str2)) {
                 cb_listaClientes.addItem(cliente.getNome());
             }
         }
-        
+
         btn_mostrarTodos.setVisible(true);
     }
-    
+
+    private String formataStringComp(String str) {
+        str = this.removerAcentos(str.toLowerCase());
+        return str;
+    }
+
+    private static String removerAcentos(String str) {
+        str = Normalizer.normalize(str, Normalizer.Form.NFD);
+        str = str.replaceAll("[^\\p{ASCII}]", "");
+        return str;
+    }
+
     /**
      * @param args the command line arguments
      */
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_atribuirVendaPrazo;
