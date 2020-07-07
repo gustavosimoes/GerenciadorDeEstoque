@@ -10,6 +10,7 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfName;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -58,8 +59,9 @@ public class GeradorPdf {
 
                 PdfWriter.getInstance(document, new FileOutputStream(fileDirectory + "/Estoque.pdf"));
                 document.open();
-                Paragraph pg = new Paragraph(0, "Estoque\n\n\n");
+                Paragraph pg = new Paragraph(0, "Estoque");
                 document.add(pg);
+                document.add(new Paragraph("\n\n"));
                 ArrayList<Produto> listaProdutos = daoProduto.getProdutos();
                 if (!listaProdutos.isEmpty()) {
                     document.add(this.inserirTabelaEstoque(listaProdutos));
@@ -85,7 +87,7 @@ public class GeradorPdf {
     private PdfPTable inserirTabelaEstoque(ArrayList<Produto> listaProdutos) throws DocumentException {
 
         //CRIANDO CABEÇALHO
-        PdfPTable table = new PdfPTable(new float[]{5f, 5f, 8f, 5f, 5f, 5f});
+        PdfPTable table = new PdfPTable(new float[]{7f, 7f, 10f, 7f, 7f, 7f});
 
         PdfPCell celulaCodigo = new PdfPCell(new Phrase("Código"));
         celulaCodigo.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -96,10 +98,10 @@ public class GeradorPdf {
         PdfPCell celulaDescricao = new PdfPCell(new Phrase("Descrição"));
         celulaDescricao.setHorizontalAlignment(Element.ALIGN_CENTER);
 
-        PdfPCell celulaPrecoDeCusto = new PdfPCell(new Phrase("Preço de Custo"));
+        PdfPCell celulaPrecoDeCusto = new PdfPCell(new Phrase("Preço de Custo (R$)"));
         celulaPrecoDeCusto.setHorizontalAlignment(Element.ALIGN_CENTER);
 
-        PdfPCell celulaPreco = new PdfPCell(new Phrase("Preco"));
+        PdfPCell celulaPreco = new PdfPCell(new Phrase("Preco (R$)"));
         celulaPreco.setHorizontalAlignment(Element.ALIGN_CENTER);
 
         PdfPCell celulaQtdEstoque = new PdfPCell(new Phrase("Qtd Estoque"));
@@ -116,8 +118,8 @@ public class GeradorPdf {
             PdfPCell celula1 = new PdfPCell(new Phrase(Long.toString(produto.getCodigo())));
             PdfPCell celula2 = new PdfPCell(new Phrase(produto.getNomeProduto()));
             PdfPCell celula3 = new PdfPCell(new Phrase(produto.getDescricao()));
-            PdfPCell celula4 = new PdfPCell(new Phrase(Double.toString(produto.getPrecoDeCusto())));
-            PdfPCell celula5 = new PdfPCell(new Phrase(Double.toString(produto.getPreco())));
+            PdfPCell celula4 = new PdfPCell(new Phrase(String.format("%.2f", produto.getPrecoDeCusto())));
+            PdfPCell celula5 = new PdfPCell(new Phrase(String.format("%.2f", produto.getPreco())));
             PdfPCell celula6 = new PdfPCell(new Phrase(Integer.toString(produto.getQuantidadeEstoque())));
 
             celula1.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -209,7 +211,7 @@ public class GeradorPdf {
 
         for (Venda venda : listaVendas) {
             PdfPCell celula1 = new PdfPCell(new Phrase(Integer.toString(venda.getIdVenda())));
-            PdfPCell celula2 = new PdfPCell(new Phrase(Double.toString(venda.getValorVenda()).replace(".", ",")));
+            PdfPCell celula2 = new PdfPCell(new Phrase(String.format("%.2f", venda.getValorVenda())));
 
             celula1.setHorizontalAlignment(Element.ALIGN_CENTER);
             celula2.setHorizontalAlignment(Element.ALIGN_RIGHT);
@@ -297,7 +299,7 @@ public class GeradorPdf {
 
         for (Venda venda : listaVendas) {
             PdfPCell celula1 = new PdfPCell(new Phrase(Integer.toString(venda.getIdVenda())));
-            PdfPCell celula2 = new PdfPCell(new Phrase(Double.toString(venda.getValorVenda()).replace(".", ",")));
+            PdfPCell celula2 = new PdfPCell(new Phrase(String.format("%.2f", venda.getValorVenda())));
             PdfPCell celula3 = new PdfPCell(new Phrase(f.format(venda.getDataVenda())));
 
             celula1.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -362,7 +364,7 @@ public class GeradorPdf {
         PdfPCell celulaIdVenda = new PdfPCell(new Phrase("Cliente"));
         celulaIdVenda.setHorizontalAlignment(Element.ALIGN_CENTER);
 
-        PdfPCell celulaValorVenda = new PdfPCell(new Phrase("Valor à Receber(R$)"));
+        PdfPCell celulaValorVenda = new PdfPCell(new Phrase("Valor à Receber (R$)"));
         celulaValorVenda.setHorizontalAlignment(Element.ALIGN_CENTER);
 
         table.addCell(celulaIdVenda);
@@ -373,7 +375,7 @@ public class GeradorPdf {
             listaVendas = daoCliente.getVendaCliente(clienteTemp.getNome());
             clienteTemp.setListaVendas(listaVendas);
             PdfPCell celula1 = new PdfPCell(new Phrase(clienteTemp.getNome()));
-            PdfPCell celula2 = new PdfPCell(new Phrase("Total: R$ " + String.format("%.2f", clienteTemp.getSaldoDevedor()).replace(".", ",")));
+            PdfPCell celula2 = new PdfPCell(new Phrase(String.format("%.2f", clienteTemp.getSaldoDevedor()).replace(".", ",")));
 
             celula1.setHorizontalAlignment(Element.ALIGN_CENTER);
             celula2.setHorizontalAlignment(Element.ALIGN_RIGHT);
@@ -411,16 +413,11 @@ public class GeradorPdf {
                 pgdata.setAlignment(Element.ALIGN_RIGHT);
                 document.add(pgdata);
                 this.preencheDados(document, nomeCliente);
-                if (!daoCliente.listaClientes().isEmpty()) {
-                    document.add(this.inserirTabelaVendasPorCliente(nomeCliente));
-                    Paragraph pgTotal = new Paragraph(valorTotal);
-                    pgTotal.setAlignment(Element.ALIGN_RIGHT);
-                    document.add(pgTotal);
-                } else {
-                    Paragraph pgNenhumaVenda = new Paragraph("Nenhuma Compra.");
-                    pgNenhumaVenda.setAlignment(Element.ALIGN_CENTER);
-                    document.add(pgNenhumaVenda);
-                }
+                this.inserirTabelaVendasPorCliente(document, nomeCliente);
+                Paragraph pgTotal = new Paragraph(valorTotal);
+                pgTotal.setAlignment(Element.ALIGN_RIGHT);
+                document.add(pgTotal);
+
             } catch (DocumentException | FileNotFoundException ex) {
                 JOptionPane.showMessageDialog(null, "Erro = " + ex.getMessage());
             } finally {
@@ -430,7 +427,7 @@ public class GeradorPdf {
         }
     }
 
-    private PdfPTable inserirTabelaVendasPorCliente(String nomeCliente) throws DocumentException {
+    private void inserirTabelaVendasPorCliente(Document document, String nomeCliente) throws DocumentException {
         PdfPTable table = new PdfPTable(new float[]{20f, 20f, 20f});
 
         ArrayList<Venda> listaVendas = new ArrayList<>();
@@ -450,21 +447,27 @@ public class GeradorPdf {
         table.addCell(celulaIdVenda);
         table.addCell(celulaValorVenda);
         table.addCell(celulaDataVenda);
+        if (!listaVendas.isEmpty()) {
+            for (Venda vendaTemp : listaVendas) {
+                PdfPCell celula1 = new PdfPCell(new Phrase(Integer.toString(vendaTemp.getIdVenda())));
+                PdfPCell celula2 = new PdfPCell(new Phrase("R$ " + String.format("%.2f", vendaTemp.getValorVenda()).replace(".", ",")));
+                PdfPCell celula3 = new PdfPCell(new Phrase(f.format(vendaTemp.getDataVenda())));
 
-        for (Venda vendaTemp : listaVendas) {
-            PdfPCell celula1 = new PdfPCell(new Phrase(Integer.toString(vendaTemp.getIdVenda())));
-            PdfPCell celula2 = new PdfPCell(new Phrase("R$ " + String.format("%.2f", vendaTemp.getValorVenda()).replace(".", ",")));
-            PdfPCell celula3 = new PdfPCell(new Phrase(f.format(vendaTemp.getDataVenda())));
+                celula1.setHorizontalAlignment(Element.ALIGN_CENTER);
+                celula2.setHorizontalAlignment(Element.ALIGN_CENTER);
+                celula3.setHorizontalAlignment(Element.ALIGN_CENTER);
 
-            celula1.setHorizontalAlignment(Element.ALIGN_CENTER);
-            celula2.setHorizontalAlignment(Element.ALIGN_CENTER);
-            celula3.setHorizontalAlignment(Element.ALIGN_CENTER);
-
-            table.addCell(celula1);
-            table.addCell(celula2);
-            table.addCell(celula3);
+                table.addCell(celula1);
+                table.addCell(celula2);
+                table.addCell(celula3);
+            }
+            document.add(table);
+        } else {
+            Paragraph pgNenhumaVenda = new Paragraph("Nenhuma Compra.");
+            pgNenhumaVenda.setAlignment(Element.ALIGN_CENTER);
+            document.add(pgNenhumaVenda);
         }
-        return table;
+
     }
 
     private void preencheDados(Document document, String nomeCliente) throws DocumentException {

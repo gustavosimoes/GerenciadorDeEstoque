@@ -227,7 +227,7 @@ public class VizualizaVendasPorCliente extends javax.swing.JFrame {
 
     private void btn_salvarRelatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_salvarRelatorioActionPerformed
         GeradorPdf geradorPdf = new GeradorPdf();
-        String strValorTotal = txt_valorTotal.getText().replace("R$ ", "").replace(",", ".");
+        String strValorTotal = txt_valorTotal.getText();
         String nomeCliente = lbl_nome.getText().replace("Nome: ", "");
         try {
             geradorPdf.salvarVendasPorCliente(nomeCliente, strValorTotal);

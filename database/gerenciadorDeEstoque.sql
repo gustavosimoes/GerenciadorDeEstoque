@@ -12,7 +12,7 @@ USE `GerenciadorDeEstoque` ;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `GerenciadorDeEstoque`.`Cliente` (
   `idCliente` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `nome` VARCHAR(20) NOT NULL UNIQUE,
+  `nome` VARCHAR(50) NOT NULL UNIQUE,
   `cpf` BIGINT NULL DEFAULT NULL,
   `telefone` BIGINT NULL DEFAULT NULL,
   `endereco` VARCHAR(100) NULL DEFAULT NULL,
