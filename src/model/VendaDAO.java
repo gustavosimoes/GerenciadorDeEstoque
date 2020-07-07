@@ -132,9 +132,8 @@ public class VendaDAO extends GeralDAO {
         return listaVendas;
     }
     
-    public void atribuirVendaPrazo(Venda novaVenda, String nomeCliente){
+    public boolean atribuirVendaPrazo(Venda novaVenda, String nomeCliente){
         this.inserirNovaVenda(novaVenda);
-        
         connectToDb();
         ClienteDAO daoCliente = new ClienteDAO();
         int idCliente = daoCliente.getIdCliente(nomeCliente);
@@ -166,6 +165,7 @@ public class VendaDAO extends GeralDAO {
                 JOptionPane.showMessageDialog(null, "Erro = " + ex.getMessage());
             }
         }
-        
+        return sucesso;
     }
+    
 }

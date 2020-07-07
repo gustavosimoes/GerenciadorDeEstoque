@@ -9,6 +9,7 @@ import controller.Cliente;
 import controller.Venda;
 import java.text.Normalizer;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import model.ClienteDAO;
 import model.VendaDAO;
 
@@ -19,15 +20,17 @@ import model.VendaDAO;
 public class AtribuirVendaPrazo extends javax.swing.JFrame {
 
     Venda vendaTemp = new Venda();
+    CadastrarVenda cadastrarVendaTemp;
 
     /**
      * Creates new form NovaVendaPrazo
      */
-    public AtribuirVendaPrazo(Venda vendaTemp) {
+    public AtribuirVendaPrazo(CadastrarVenda cadastrarVendaTemp, Venda vendaTemp) {
         initComponents();
         this.vendaTemp = vendaTemp;
         this.mostrarTodosClientes();
         this.setLocationRelativeTo(null);
+        this.cadastrarVendaTemp = cadastrarVendaTemp;
     }
 
     /**
@@ -158,7 +161,12 @@ public class AtribuirVendaPrazo extends javax.swing.JFrame {
     private void btn_atribuirVendaPrazoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_atribuirVendaPrazoActionPerformed
         VendaDAO daoVenda = new VendaDAO();
         String nomeCliente = cb_listaClientes.getSelectedItem().toString();
-        daoVenda.atribuirVendaPrazo(this.vendaTemp, nomeCliente);
+        if(daoVenda.atribuirVendaPrazo(this.vendaTemp, nomeCliente)){
+            JOptionPane.showMessageDialog(null, "Venda Atribuída à\n"
+                    + nomeCliente);
+            this.dispose();
+            this.cadastrarVendaTemp.dispose();
+        }
     }//GEN-LAST:event_btn_atribuirVendaPrazoActionPerformed
 
     private void txt_filtrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_filtrarActionPerformed

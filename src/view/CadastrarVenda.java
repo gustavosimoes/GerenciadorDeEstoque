@@ -283,7 +283,7 @@ public class CadastrarVenda extends javax.swing.JFrame {
         if (!check_vendaPrazo.isSelected()) {
             this.cadastrarVenda();
         } else {
-            AtribuirVendaPrazo atribuirVendaPrazo = new AtribuirVendaPrazo(this.construtorVenda());
+            AtribuirVendaPrazo atribuirVendaPrazo = new AtribuirVendaPrazo(this, this.construtorVenda());
             atribuirVendaPrazo.setVisible(true);
         }
 
@@ -322,7 +322,7 @@ public class CadastrarVenda extends javax.swing.JFrame {
             lbl_txtValorVar.setText(strValorVenda);
             txt_quantidade.setText("1");
             this.atualizaVendaFinal();
-        } else{
+        } else {
             JOptionPane.showMessageDialog(null, "Por favor insira um código de produto.");
         }
     }//GEN-LAST:event_btn_adicionarProdutoActionPerformed
@@ -400,6 +400,7 @@ public class CadastrarVenda extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, "Algum dos produtos que você está tentando vender não tem estoque!\n Por favor verifique!");
         }
+        this.dispose();
     }
 
     /**
