@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import view.InserirEstoqueProduto;
 
 //Início da classe de conexão//
 public class ProdutoDAO extends GeralDAO {
@@ -37,8 +38,20 @@ public class ProdutoDAO extends GeralDAO {
             pst.execute();
             sucesso = true;
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro = " + ex.getMessage());
-            sucesso = false;
+            if (ex.getErrorCode() == 1062) {
+                int dialogButton = JOptionPane.YES_NO_OPTION;
+                JOptionPane.showConfirmDialog(null, "Este produto já está cadastrado.\n"
+                        + "Deseja inserir apenas o estoque?", "Warning", dialogButton);
+                if (dialogButton == JOptionPane.YES_OPTION) {
+                    InserirEstoqueProduto insEstoqueProduto = new InserirEstoqueProduto(novoProduto.getCodigo());
+                    insEstoqueProduto.setVisible(true);
+                }
+                sucesso = false;
+            }
+            if (sucesso) {
+                JOptionPane.showMessageDialog(null, "Erro = " + ex.getMessage());
+                sucesso = false;
+            }
         } finally {
             try {   //Encerra a conexão
                 con.close();
@@ -315,7 +328,7 @@ public class ProdutoDAO extends GeralDAO {
 
         ArrayList<Produto> listaProdutos = new ArrayList<>();
         Produto produtoTemp;
-        long codigo; 
+        long codigo;
         int qtdEstoque;
         double preco, precoDeCusto;
         String nomeProduto, descricao;

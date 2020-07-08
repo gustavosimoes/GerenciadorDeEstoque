@@ -22,6 +22,12 @@ public class InserirEstoqueProduto extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
     }
+    
+    public InserirEstoqueProduto(long codigo) {
+        initComponents();
+        this.setLocationRelativeTo(null);
+        txt_codigoProduto.setText(Long.toString(codigo));
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
